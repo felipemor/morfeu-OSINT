@@ -361,6 +361,38 @@ export default function LoginPage() {
                       Preencher Código de Teste
                     </button>
                   </div>
+
+                  {/* Quick Profile Selector for Demo / Audit */}
+                  <div className="mt-3 p-2.5 rounded-xl bg-bg-primary/80 border border-bg-border/60 space-y-1.5">
+                    <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3 text-accent-cyan" /> Perfis de Demonstração / Auditoria:
+                    </p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEmail('admin@morfeusec.io');
+                          setPassword('Admin#2026!SecMaster');
+                          setTotpCode(['4', '9', '2', '8', '1', '7']);
+                        }}
+                        className="px-2 py-1.5 rounded-lg text-[11px] font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-colors flex items-center justify-center gap-1"
+                      >
+                        👑 Entrar como ADMIN
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEmail('operator@sfssa.security');
+                          setPassword('Stellantis@2026!Sec');
+                          setTotpCode(['4', '9', '2', '8', '1', '7']);
+                        }}
+                        className="px-2 py-1.5 rounded-lg text-[11px] font-bold bg-accent-cyan/10 hover:bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/30 transition-colors flex items-center justify-center gap-1"
+                      >
+                        👤 Entrar como OPERADOR
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 

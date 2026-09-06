@@ -332,5 +332,65 @@
     "details": {
       "details": "Solicitação de reset da trilha de auditoria efetuada. Registro imutável conservado para auditoria e troubleshooting."
     }
+  },
+  {
+    "id": "audit-e41902e7",
+    "user_id": "user-001",
+    "action": "SCAN_DELETED",
+    "resource_type": "Scan",
+    "resource_id": "002",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T19:56:22Z",
+    "details": {
+      "scan_id": "002",
+      "details": "Registro de varredura excluído pelo operador."
+    }
+  },
+  {
+    "id": "audit-71313bdd",
+    "user_id": "user-001",
+    "action": "SCAN_DELETED",
+    "resource_type": "Scan",
+    "resource_id": "001",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T19:56:24Z",
+    "details": {
+      "scan_id": "001",
+      "details": "Registro de varredura excluído pelo operador."
+    }
+  },
+  {
+    "id": "audit-57eb1e04",
+    "user_id": "user-001",
+    "action": "SCAN_DELETED",
+    "resource_type": "Scan",
+    "resource_id": "003",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T19:56:25Z",
+    "details": {
+      "scan_id": "003",
+      "details": "Registro de varredura excluído pelo operador."
+    }
+  },
+  {
+    "id": "audit-73c9ba5f",
+    "user_id": "user-001",
+    "action": "SCAN_DELETED",
+    "resource_type": "Scan",
+    "resource_id": "004",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T19:56:26Z",
+    "details": {
+      "scan_id": "004",
+      "details": "Registro de varredura excluído pelo operador."
+    }
   }
 ]

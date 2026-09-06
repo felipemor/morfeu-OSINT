@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import {
   Shield, LayoutDashboard, FolderKanban, Globe,
-  Bug, ScrollText, ChevronLeft, ChevronRight, LogOut, User, Crosshair, FileText, Radar, ShieldCheck, Smartphone, Activity, Network, ShieldAlert, BarChart2, BarChart3, ExternalLink, Sparkles
+  Bug, ScrollText, ChevronLeft, ChevronRight, LogOut, User, Crosshair, FileText, Radar, ShieldCheck, Smartphone, Activity, Network, ShieldAlert, BarChart2, BarChart3, ExternalLink, Sparkles, Users, Crown
 } from 'lucide-react';
 import { authApi } from '@/lib/api';
 import clsx from 'clsx';
@@ -101,6 +101,20 @@ export default function Sidebar() {
 
         {/* Nav */}
         <nav className="flex-1 py-3 px-2 space-y-0.5 overflow-y-auto">
+          {user?.role === 'ADMIN' && (
+            <Link
+              href="/admin/users"
+              className={clsx(
+                'sidebar-item font-bold text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 mb-2',
+                (pathname === '/admin/users' || pathname.startsWith('/admin/users/')) && 'active',
+                collapsed && 'justify-center px-0'
+              )}
+            >
+              <Crown className={clsx('flex-shrink-0 text-amber-400', collapsed ? 'w-5 h-5' : 'w-4 h-4')} />
+              {!collapsed && <span className="truncate">Gerenciamento de Acessos</span>}
+            </Link>
+          )}
+
           {navigation.map(item => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
             return (

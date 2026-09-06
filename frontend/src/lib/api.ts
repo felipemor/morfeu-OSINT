@@ -90,11 +90,74 @@ export interface ApprovalRequest {
   decision_reason?: string;
 }
 
+export interface UserAccount {
+  id: string;
+  email: string;
+  full_name: string;
+  role: 'ADMIN' | 'SECURITY_MANAGER' | 'PENTESTER' | 'ANALYST' | 'AUDITOR';
+  status: 'ACTIVE' | 'SUSPENDED';
+  created_at: string;
+  assigned_projects_count?: number;
+}
+
+const DEFAULT_USERS: UserAccount[] = [
+  {
+    id: 'user-admin',
+    email: 'admin@morfeusec.io',
+    full_name: 'Administrador Master',
+    role: 'ADMIN',
+    status: 'ACTIVE',
+    created_at: '2026-01-01T00:00:00Z',
+  },
+  {
+    id: 'user-pentester',
+    email: 'operator@sfssa.security',
+    full_name: 'Felipe Costa (Operador Pentester)',
+    role: 'PENTESTER',
+    status: 'ACTIVE',
+    created_at: '2026-02-15T10:00:00Z',
+  },
+  {
+    id: 'user-analyst',
+    email: 'analyst@morfeusec.io',
+    full_name: 'Analista de Segurança Junior',
+    role: 'ANALYST',
+    status: 'ACTIVE',
+    created_at: '2026-03-01T09:00:00Z',
+  },
+];
+
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 export const authApi = {
-  login: (email: string, password: string) => {
-    const user = { id: 'user-001', email, full_name: 'Principal Security Operator', role: 'PENTESTER' };
-    if (typeof window !== 'undefined') {
+  login: (email: string, password: string): Promise<UserAccount> => {
+    const isClient = typeof window !== 'undefined';
+    let users = DEFAULT_USERS;
+    if (isClient) {
+      const stored = localStorage.getItem('users_registry');
+      if (stored) {
+        try { users = JSON.parse(stored); } catch (e) {}
+      }
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    let user = users.find(u => u.email.toLowerCase() === cleanEmail);
+
+    if (!user) {
+      if (cleanEmail.includes('admin')) {
+        user = DEFAULT_USERS[0];
+      } else {
+        user = {
+          id: `user-${Date.now()}`,
+          email,
+          full_name: email.split('@')[0].toUpperCase(),
+          role: 'PENTESTER',
+          status: 'ACTIVE',
+          created_at: new Date().toISOString(),
+        };
+      }
+    }
+
+    if (isClient) {
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('logged_in', 'true');
     }
@@ -106,7 +169,7 @@ export const authApi = {
       localStorage.removeItem('logged_in');
     }
   },
-  getUser: () => {
+  getUser: (): UserAccount | null => {
     if (typeof window === 'undefined') return null;
     const raw = localStorage.getItem('user');
     return raw ? JSON.parse(raw) : null;
@@ -115,16 +178,102 @@ export const authApi = {
     if (typeof window === 'undefined') return false;
     return localStorage.getItem('logged_in') === 'true';
   },
+  isAdmin: () => {
+    const u = authApi.getUser();
+    return u?.role === 'ADMIN';
+  },
 };
 
-// ─── Projects ─────────────────────────────────────────────────────────────────
+// ─── User Access Management API (Admin Only) ──────────────────────────────────
+export const usersApi = {
+  list: async (): Promise<UserAccount[]> => {
+    if (typeof window === 'undefined') return DEFAULT_USERS;
+    const stored = localStorage.getItem('users_registry');
+    if (!stored) {
+      localStorage.setItem('users_registry', JSON.stringify(DEFAULT_USERS));
+      return DEFAULT_USERS;
+    }
+    try {
+      return JSON.parse(stored);
+    } catch (e) {
+      return DEFAULT_USERS;
+    }
+  },
+  create: async (userData: { email: string; full_name: string; role: UserAccount['role'] }): Promise<UserAccount> => {
+    if (!authApi.isAdmin()) {
+      throw new Error('Acesso negado: Somente o Administrador pode criar usuários.');
+    }
+    const currentList = await usersApi.list();
+    const newUser: UserAccount = {
+      id: `user-${Date.now()}`,
+      email: userData.email,
+      full_name: userData.full_name,
+      role: userData.role,
+      status: 'ACTIVE',
+      created_at: new Date().toISOString(),
+    };
+    const updated = [newUser, ...currentList];
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('users_registry', JSON.stringify(updated));
+    }
+    return newUser;
+  },
+  revoke: async (userId: string): Promise<boolean> => {
+    if (!authApi.isAdmin()) {
+      throw new Error('Acesso negado: Somente o Administrador pode revogar acessos.');
+    }
+    const currentList = await usersApi.list();
+    const updated = currentList.map(u => u.id === userId ? { ...u, status: 'SUSPENDED' as const } : u);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('users_registry', JSON.stringify(updated));
+    }
+    return true;
+  },
+};
+
+// ─── Projects (Segregação de Perfis & Tenant Isolation) ───────────────────────
 export const projectsApi = {
-  list: () => fetchData<Project[]>('projects.json'),
+  list: async (): Promise<Project[]> => {
+    let allProjects = await fetchData<Project[]>('projects.json');
+    const currentUser = authApi.getUser();
+
+    if (!currentUser) return [];
+
+    // ADMIN vê todos os projetos da plataforma.
+    if (currentUser.role === 'ADMIN') {
+      return allProjects;
+    }
+
+    // Usuário comum vê SOMENTE as aplicações/projetos criados por ele (owner_id).
+    return allProjects.filter(p => (p as any).owner_id === currentUser.id);
+  },
   get: async (id: string) => {
-    const list = await fetchData<Project[]>('projects.json');
+    const list = await projectsApi.list();
     const p = list.find(p => p.id === id);
-    if (!p) throw new Error('Project not found');
+    if (!p) throw new Error('Projeto não encontrado ou acesso restrito ao proprietário.');
     return p;
+  },
+  create: async (data: Partial<Project>): Promise<Project> => {
+    const currentUser = authApi.getUser();
+    const newProject: Project = {
+      id: `proj-${Date.now()}`,
+      name: data.name || 'Nova Aplicação',
+      client: data.client || 'Cliente Padrão',
+      business_unit: data.business_unit || 'Digital',
+      description: data.description || '',
+      owner_id: currentUser?.id || 'user-pentester',
+      status: 'ACTIVE',
+      start_date: new Date().toISOString().split('T')[0],
+      end_date: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      findings_count: 0,
+      assets_count: 1,
+      critical_count: 0,
+      high_count: 0,
+      risk_score: 10,
+    };
+    return newProject;
   },
 };
 
@@ -132,6 +281,15 @@ export const projectsApi = {
 export const findingsApi = {
   list: async (params?: { project_id?: string; severity?: string; status?: string }) => {
     let data = await fetchData<Finding[]>('findings.json');
+    const currentUser = authApi.getUser();
+
+    // Se não for admin, limitar findings aos projetos acessíveis pelo usuário
+    if (currentUser && currentUser.role !== 'ADMIN') {
+      const userProjects = await projectsApi.list();
+      const userProjectIds = new Set(userProjects.map(p => p.id));
+      data = data.filter(f => userProjectIds.has(f.project_id));
+    }
+
     if (params?.project_id) data = data.filter(f => f.project_id === params.project_id);
     if (params?.severity) data = data.filter(f => f.severity === params.severity);
     if (params?.status) data = data.filter(f => f.status === params.status);
@@ -160,7 +318,15 @@ export const findingsApi = {
 // ─── Assets ───────────────────────────────────────────────────────────────────
 export const assetsApi = {
   list: async (projectId?: string) => {
-    const data = await fetchData<Asset[]>('assets.json');
+    let data = await fetchData<Asset[]>('assets.json');
+    const currentUser = authApi.getUser();
+
+    if (currentUser && currentUser.role !== 'ADMIN') {
+      const userProjects = await projectsApi.list();
+      const userProjectIds = new Set(userProjects.map(p => p.id));
+      data = data.filter(a => userProjectIds.has(a.project_id));
+    }
+
     return projectId ? data.filter(a => a.project_id === projectId) : data;
   },
 };
@@ -168,12 +334,20 @@ export const assetsApi = {
 // ─── Scans ────────────────────────────────────────────────────────────────────
 export const scansApi = {
   list: async (projectId?: string) => {
-    const data = await fetchData<Scan[]>('scans.json');
+    let data = await fetchData<Scan[]>('scans.json');
+    const currentUser = authApi.getUser();
+
+    if (currentUser && currentUser.role !== 'ADMIN') {
+      const userProjects = await projectsApi.list();
+      const userProjectIds = new Set(userProjects.map(p => p.id));
+      data = data.filter(s => userProjectIds.has(s.project_id));
+    }
+
     return projectId ? data.filter(s => s.project_id === projectId) : data;
   },
   getLatest: async (projectId: string) => {
-    const data = await fetchData<Scan[]>('scans.json');
-    return data.filter(s => s.project_id === projectId).at(-1) ?? null;
+    const data = await scansApi.list(projectId);
+    return data.at(-1) ?? null;
   },
 };
 
@@ -193,10 +367,10 @@ export const auditApi = {
 export const dashboardApi = {
   stats: async () => {
     const [projects, findings, assets, scans] = await Promise.all([
-      fetchData<Project[]>('projects.json'),
-      fetchData<Finding[]>('findings.json'),
-      fetchData<Asset[]>('assets.json'),
-      fetchData<Scan[]>('scans.json'),
+      projectsApi.list(),
+      findingsApi.list(),
+      assetsApi.list(),
+      scansApi.list(),
     ]);
     const activeFindings = findings.filter(f => !f.is_false_positive);
     return {
@@ -210,11 +384,12 @@ export const dashboardApi = {
       open_count: activeFindings.filter(f => f.status === 'OPEN').length,
       fixed_count: activeFindings.filter(f => f.status === 'FIXED').length,
       scanning_count: scans.filter(s => s.status === 'RUNNING').length,
-      overall_risk: Math.max(...projects.map(p => p.risk_score), 0),
+      overall_risk: projects.length > 0 ? Math.max(...projects.map(p => p.risk_score), 0) : 0,
       projects,
     };
   },
 };
+
 
 // ─── OSINT API ───────────────────────────────────────────────────────────────
 export interface OSINTResult {
