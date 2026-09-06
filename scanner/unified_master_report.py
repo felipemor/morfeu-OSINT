@@ -139,43 +139,66 @@ class Big4NumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._saved_page_states = []
+        # Draw background on the very first page immediately (before content)
+        self._draw_background()
+
+    def _draw_background(self):
+        """Paint dark background — must be called BEFORE content is drawn."""
+        w, h = A4
+        # Full dark background
+        self.setFillColor(colors.HexColor("#060a14"))
+        self.rect(0, 0, w, h, fill=1, stroke=0)
+        # Left cyan accent bar
+        self.setFillColor(PRIMARY_CYAN)
+        self.rect(0, 0, 3, h, fill=1, stroke=0)
 
     def showPage(self):
+        # Save current page state (content already drawn over dark background)
         self._saved_page_states.append(dict(self.__dict__))
         self._startPage()
+        # Draw background on the NEW blank page before any content
+        self._draw_background()
 
     def save(self):
         num_pages = len(self._saved_page_states)
         for state in self._saved_page_states:
             self.__dict__.update(state)
+            # draw_decorations only adds header/footer ON TOP of existing content
             self.draw_decorations(num_pages)
             super().showPage()
         super().save()
 
     def draw_decorations(self, page_count):
+        """Draw header/footer ONLY — background is already in the page state."""
         self.saveState()
-        # Header bar
-        self.setStrokeColor(PRIMARY_CYAN)
-        self.setLineWidth(1)
-        self.line(36, A4[1] - 30, A4[0] - 36, A4[1] - 30)
+        w, h = A4
 
+        # ── Top cyan line ─────────────────────────────────────────────────────
+        self.setStrokeColor(PRIMARY_CYAN)
+        self.setLineWidth(1.2)
+        self.line(36, h - 30, w - 36, h - 30)
+
+        # ── Header text ───────────────────────────────────────────────────────
         self.setFont("Helvetica-Bold", 7)
         self.setFillColor(PRIMARY_CYAN)
-        self.drawString(36, A4[1] - 24, "morfeusec OSINT — LAUDO TÉCNICO-EXECUTIVO CONSOLIDADO DE AUDITORIA & CONFORMIDADE")
+        self.drawString(36, h - 22, "morfeusec OSINT — LAUDO TÉCNICO-EXECUTIVO CONSOLIDADO DE AUDITORIA & CONFORMIDADE")
 
         self.setFont("Helvetica", 7)
         self.setFillColor(TEXT_MUTED)
-        self.drawRightString(A4[0] - 36, A4[1] - 24, "PADRÃO BIG-4 & BIGTECH • BACEN CMN 4.893 & NIST SP 800-115")
+        self.drawRightString(w - 36, h - 22, "PADRÃO BIG-4 & BIGTECH • BACEN CMN 4.893 & NIST SP 800-115")
 
-        # Footer bar
-        self.setStrokeColor(BORDER_COLOR)
-        self.line(36, 36, A4[0] - 36, 36)
+        # ── Bottom divider ────────────────────────────────────────────────────
+        self.setStrokeColor(colors.HexColor("#1a2840"))
+        self.setLineWidth(0.5)
+        self.line(36, 40, w - 36, 40)
 
+        # ── Footer text ───────────────────────────────────────────────────────
         self.setFont("Helvetica", 7)
-        self.setFillColor(TEXT_MUTED)
+        self.setFillColor(colors.HexColor("#4a6080"))
         self.drawString(36, 26, "ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - fsec.costa@gmail.com")
-        self.drawRightString(A4[0] - 36, 26, f"Página {self._pageNumber} de {page_count}")
+        self.drawRightString(w - 36, 26, f"Página {self._pageNumber} de {page_count}")
         self.restoreState()
+
 
 
 def _load_json(filename: str) -> list:

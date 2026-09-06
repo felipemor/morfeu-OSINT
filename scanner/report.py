@@ -22,16 +22,17 @@ from reportlab.lib.colors import HexColor, white, black
 
 
 # ─── Color Palette (Cyber Dark Theme & Executive High-Contrast) ───────────────
-C_BG        = HexColor("#080d1a")  # Deep Midnight Canvas
-C_CARD      = HexColor("#101726")  # Premium Card Surface
-C_CARD_ALT  = HexColor("#162032")  # Highlight Card
-C_BORDER    = HexColor("#1e2d42")  # Clean Structural Border
+C_BG        = HexColor("#060a14")  # Deep Midnight Canvas
+C_CARD      = HexColor("#0c1220")  # Premium Card Surface
+C_CARD_ALT  = HexColor("#101a2e")  # Highlight Card
+C_BORDER    = HexColor("#1a2840")  # Clean Structural Border
 C_BORDER_HI = HexColor("#00d4ff")  # Electric Cyan Border
 C_CYAN      = HexColor("#00d4ff")  # Accent Cyan
 C_PURPLE    = HexColor("#a855f7")  # Cyber Purple
-C_TEXT      = HexColor("#e2e8f0")  # Slate 200 Primary Text
-C_TEXT_DIM  = HexColor("#94a3b8")  # Slate 400 Secondary
-C_MUTED     = HexColor("#64748b")  # Slate 500 Subtitle
+C_TEXT      = HexColor("#e8edf5")  # Slate 100 Primary Text (brighter)
+C_TEXT_DIM  = HexColor("#a8b8cc")  # Slate 300 Secondary (brighter)
+C_MUTED     = HexColor("#7a8fa8")  # Slate 400 Subtitle (brighter)
+C_WHITE     = HexColor("#f0f4f8")  # Near-white for headings
 
 # Severity Colors
 C_CRITICAL  = HexColor("#ef4444")  # Red
@@ -39,8 +40,7 @@ C_HIGH      = HexColor("#f97316")  # Orange
 C_MEDIUM    = HexColor("#eab308")  # Amber/Yellow
 C_LOW       = HexColor("#10b981")  # Emerald/Green
 C_INFO      = HexColor("#06b6d4")  # Cyan
-C_WHITE     = white
-C_BLACK     = black
+C_BLACK     = HexColor("#060a14")  # Near-black (same as bg)
 
 SEV_COLORS = {
     "CRITICAL": C_CRITICAL,
@@ -348,7 +348,7 @@ class PentestReportPDF:
                 BACEN_SLAS.get(sev, "—")
             ])
 
-        t_sev = Table(data_sev, colWidths=[2.8*cm, 1.2*cm, 1.8*cm, 6.2*cm, 5.3*cm], style=[
+        t_sev = Table(data_sev, colWidths=[2.6*cm, 1.2*cm, 1.7*cm, 6.0*cm, 5.0*cm], style=[
             ("BACKGROUND", (0,0), (-1,0), C_CARD),
             ("TEXTCOLOR", (0,0), (-1,0), C_CYAN),
             ("FONTNAME", (0,0), (-1,0), "Helvetica-Bold"),
@@ -358,8 +358,11 @@ class PentestReportPDF:
             ("BOX", (0,0), (-1,-1), 1, C_BORDER),
             ("INNERGRID", (0,0), (-1,-1), 0.3, C_BORDER),
             ("ALIGN", (1,0), (2,-1), "CENTER"),
-            ("TOPPADDING", (0,0), (-1,-1), 4),
-            ("BOTTOMPADDING", (0,0), (-1,-1), 4),
+            ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+            ("TOPPADDING", (0,0), (-1,-1), 5),
+            ("BOTTOMPADDING", (0,0), (-1,-1), 5),
+            ("LEFTPADDING", (0,0), (-1,-1), 6),
+            ("RIGHTPADDING", (0,0), (-1,-1), 6),
             *[("TEXTCOLOR", (0, i+1), (0, i+1), sev_color(SEVERITY_ORDER[i])) for i in range(len(SEVERITY_ORDER))],
             *[("FONTNAME", (0, i+1), (0, i+1), "Helvetica-Bold") for i in range(len(SEVERITY_ORDER))],
         ])
@@ -387,7 +390,7 @@ class PentestReportPDF:
             ["Art. 12 (Plano de Ação e Resposta)", "Definição de prazos e procedimentos documentados para remediação tempestiva de vulnerabilidades.", "Roadmap de remediação em 3 fases com SLAs formalizados na seção 5 deste laudo.", "PLANO DOCUMENTADO"],
         ]
 
-        t_bacen = Table(bacen_rows, colWidths=[3.2*cm, 4.8*cm, 6.5*cm, 2.8*cm], style=[
+        t_bacen = Table(bacen_rows, colWidths=[3.0*cm, 4.5*cm, 6.2*cm, 2.8*cm], style=[
             ("BACKGROUND", (0,0), (-1,0), C_CARD),
             ("TEXTCOLOR", (0,0), (-1,0), C_CYAN),
             ("FONTNAME", (0,0), (-1,0), "Helvetica-Bold"),
@@ -396,9 +399,13 @@ class PentestReportPDF:
             ("TEXTCOLOR", (0,1), (-1,-1), C_TEXT),
             ("BOX", (0,0), (-1,-1), 1, C_BORDER),
             ("INNERGRID", (0,0), (-1,-1), 0.3, C_BORDER),
-            ("TOPPADDING", (0,0), (-1,-1), 3.5),
-            ("BOTTOMPADDING", (0,0), (-1,-1), 3.5),
+            ("TOPPADDING", (0,0), (-1,-1), 5),
+            ("BOTTOMPADDING", (0,0), (-1,-1), 5),
+            ("LEFTPADDING", (0,0), (-1,-1), 6),
+            ("RIGHTPADDING", (0,0), (-1,-1), 6),
+            ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
             ("ALIGN", (3,0), (3,-1), "CENTER"),
+            ("WORDWRAP", (0,0), (-1,-1), True),
         ])
         self.story.append(t_bacen)
 
@@ -470,7 +477,7 @@ class PentestReportPDF:
                 Paragraph(sla, ParagraphStyle("t_sla", fontSize=6.5, textColor=C_MUTED, fontName="Helvetica")),
             ])
 
-        t = Table(table_data, colWidths=[0.8*cm, 6.8*cm, 2.2*cm, 1.3*cm, 3.8*cm, 2.4*cm], style=[
+        t = Table(table_data, colWidths=[0.8*cm, 6.5*cm, 2.0*cm, 1.3*cm, 3.5*cm, 2.4*cm], style=[
             ("BACKGROUND", (0,0), (-1,0), C_CARD),
             ("TEXTCOLOR", (0,0), (-1,0), C_CYAN),
             ("FONTNAME", (0,0), (-1,0), "Helvetica-Bold"),
@@ -481,8 +488,10 @@ class PentestReportPDF:
             ("INNERGRID", (0,0), (-1,-1), 0.3, C_BORDER),
             ("ALIGN", (0,0), (0,-1), "CENTER"),
             ("ALIGN", (2,0), (3,-1), "CENTER"),
-            ("TOPPADDING", (0,0), (-1,-1), 3.5),
-            ("BOTTOMPADDING", (0,0), (-1,-1), 3.5),
+            ("TOPPADDING", (0,0), (-1,-1), 4),
+            ("BOTTOMPADDING", (0,0), (-1,-1), 4),
+            ("LEFTPADDING", (0,0), (-1,-1), 5),
+            ("RIGHTPADDING", (0,0), (-1,-1), 5),
             ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
         ])
         self.story.append(t)
@@ -529,7 +538,7 @@ class PentestReportPDF:
             if f.get("parameter"):
                 meta_data.append(["Parâmetro Vulnerável", str(f.get("parameter")), "Status Auditoria", str(f.get("status", "OPEN"))])
 
-            mt = Table(meta_data, colWidths=[3.2*cm, 8.3*cm, 2.3*cm, 3.5*cm], style=[
+            mt = Table(meta_data, colWidths=[3.0*cm, 7.8*cm, 2.2*cm, 3.5*cm], style=[
                 ("TEXTCOLOR", (0,0), (0,-1), C_MUTED),
                 ("TEXTCOLOR", (2,0), (2,-1), C_MUTED),
                 ("TEXTCOLOR", (1,0), (1,-1), C_TEXT),
@@ -538,9 +547,10 @@ class PentestReportPDF:
                 ("FONTNAME", (2,0), (2,-1), "Helvetica-Bold"),
                 ("FONTSIZE", (0,0), (-1,-1), 7),
                 ("BACKGROUND", (0,0), (-1,-1), C_BG),
-                ("TOPPADDING", (0,0), (-1,-1), 3),
-                ("BOTTOMPADDING", (0,0), (-1,-1), 3),
+                ("TOPPADDING", (0,0), (-1,-1), 4),
+                ("BOTTOMPADDING", (0,0), (-1,-1), 4),
                 ("LEFTPADDING", (0,0), (-1,-1), 8),
+                ("RIGHTPADDING", (0,0), (-1,-1), 6),
                 ("INNERGRID", (0,0), (-1,-1), 0.3, C_BORDER),
                 ("BOX", (0,0), (-1,-1), 0.5, C_BORDER),
             ])
@@ -683,9 +693,33 @@ class PentestReportPDF:
     @staticmethod
     def _page_template(canvas, doc):
         canvas.saveState()
-        canvas.setFillColor(C_MUTED)
+        w, h = A4
+
+        # ── Full dark background ──────────────────────────────────────────
+        canvas.setFillColor(HexColor("#060a14"))
+        canvas.rect(0, 0, w, h, fill=1, stroke=0)
+
+        # ── Subtle top accent line (cyan) ─────────────────────────────────
+        canvas.setStrokeColor(HexColor("#00d4ff"))
+        canvas.setLineWidth(1.5)
+        canvas.line(1.6*cm, h - 0.7*cm, w - 1.6*cm, h - 0.7*cm)
+
+        # ── Left accent bar ───────────────────────────────────────────────
+        canvas.setFillColor(HexColor("#00d4ff"))
+        canvas.rect(0, 0, 3, h, fill=1, stroke=0)
+
+        # ── Bottom accent line ────────────────────────────────────────────
+        canvas.setStrokeColor(HexColor("#1a2840"))
+        canvas.setLineWidth(0.5)
+        canvas.line(1.6*cm, 1.6*cm, w - 1.6*cm, 1.6*cm)
+
+        # ── Footer text ───────────────────────────────────────────────────
+        canvas.setFillColor(HexColor("#4a6080"))
         canvas.setFont("Helvetica", 7)
-        canvas.drawCentredString(A4[0]/2, 1.1*cm, f"morfeusec OSINT — Escrito por Felipe Costa - fsec.costa@gmail.com — Página {doc.page}")
+        canvas.drawCentredString(
+            w / 2, 0.9*cm,
+            f"morfeusec OSINT — Escrito por Felipe Costa - fsec.costa@gmail.com — Página {doc.page}"
+        )
         canvas.restoreState()
 
 

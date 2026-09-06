@@ -279,6 +279,107 @@
   .table-dark tr:hover td {
     background-color: rgba(255,255,255,0.02);
   }
+
+  /* Generic .table alias (used across pages) */
+  .table {
+    width: 100%;
+    font-size: 0.875rem;
+    border-collapse: collapse;
+  }
+  .table th {
+    padding: 0.625rem 1rem;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #64748b;
+    border-bottom: 1px solid #1e2d45;
+    background-color: rgba(8,12,24,0.5);
+  }
+  .table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(30,45,69,0.4);
+    color: #cbd5e1;
+    vertical-align: middle;
+  }
+  .table tr:last-child td {
+    border-bottom: none;
+  }
+  .table tbody tr:hover td {
+    background-color: rgba(0,212,255,0.03);
+  }
+
+  /* .card — generic content card */
+  .card {
+    background: linear-gradient(135deg, rgba(17,24,39,0.92) 0%, rgba(13,18,36,0.96) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid #1e2d45;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  /* Badge variants */
+  .badge-red {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background-color: rgba(255,71,87,0.15);
+    color: #ff6b7a;
+    border: 1px solid rgba(255,71,87,0.35);
+    letter-spacing: 0.03em;
+  }
+  .badge-orange {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background-color: rgba(255,140,0,0.15);
+    color: #ffb347;
+    border: 1px solid rgba(255,140,0,0.35);
+    letter-spacing: 0.03em;
+  }
+  .badge-cyan {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background-color: rgba(0,212,255,0.12);
+    color: #00d4ff;
+    border: 1px solid rgba(0,212,255,0.3);
+    letter-spacing: 0.03em;
+  }
+  .badge-green {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background-color: rgba(0,230,118,0.12);
+    color: #00e676;
+    border: 1px solid rgba(0,230,118,0.3);
+    letter-spacing: 0.03em;
+  }
+  .badge-purple {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background-color: rgba(139,92,246,0.15);
+    color: #a78bfa;
+    border: 1px solid rgba(139,92,246,0.3);
+    letter-spacing: 0.03em;
+  }
 }
 
 @layer utilities {

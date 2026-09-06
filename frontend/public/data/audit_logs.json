@@ -392,5 +392,308 @@
       "scan_id": "004",
       "details": "Registro de varredura excluído pelo operador."
     }
+  },
+  {
+    "id": "audit-41d821aa",
+    "user_id": "user-001",
+    "action": "SCAN_STARTED",
+    "resource_type": "Scan",
+    "resource_id": "f58bb2a8",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:04:46Z",
+    "details": {
+      "url": "https://www.bancostellantis.com.br/",
+      "max_depth": 2,
+      "max_urls": 50
+    }
+  },
+  {
+    "id": "audit-c26c0cb7",
+    "user_id": "user-001",
+    "action": "SCAN_COMPLETED",
+    "resource_type": "Scan",
+    "resource_id": "f58bb2a8",
+    "project_id": "proj-f58bb2a8",
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:04:55Z",
+    "details": {
+      "url": "https://www.bancostellantis.com.br/",
+      "project_id": "proj-f58bb2a8",
+      "findings_count": 8,
+      "critical": 0,
+      "high": 0,
+      "urls_found": 2,
+      "duration_s": 9
+    }
+  },
+  {
+    "id": "audit-6f6aefea",
+    "user_id": "user-001",
+    "action": "REPORT_DELETED",
+    "resource_type": "Report",
+    "resource_id": "relatorio_consolidado_pentest_pt_20260906_170851.pdf",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:01Z",
+    "details": {
+      "filename": "relatorio_consolidado_pentest_pt_20260906_170851.pdf",
+      "details": "Relatório exportado foi excluído pelo operador."
+    }
+  },
+  {
+    "id": "audit-f433c43f",
+    "user_id": "user-001",
+    "action": "REPORT_DELETED",
+    "resource_type": "Report",
+    "resource_id": "relatorio_consolidado_pentest_pt_20260906_170830.pdf",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:01Z",
+    "details": {
+      "filename": "relatorio_consolidado_pentest_pt_20260906_170830.pdf",
+      "details": "Relatório exportado foi excluído pelo operador."
+    }
+  },
+  {
+    "id": "audit-98e6718c",
+    "user_id": "user-001",
+    "action": "REPORT_DELETED",
+    "resource_type": "Report",
+    "resource_id": "relatorio_consolidado_pentest_pt_20260906_170611.pdf",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:03Z",
+    "details": {
+      "filename": "relatorio_consolidado_pentest_pt_20260906_170611.pdf",
+      "details": "Relatório exportado foi excluído pelo operador."
+    }
+  },
+  {
+    "id": "audit-8fad32c6",
+    "user_id": "user-001",
+    "action": "REPORT_DELETED",
+    "resource_type": "Report",
+    "resource_id": "report_f58bb2a8.pdf",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:04Z",
+    "details": {
+      "filename": "report_f58bb2a8.pdf",
+      "details": "Relatório exportado foi excluído pelo operador."
+    }
+  },
+  {
+    "id": "audit-ab58ea6f",
+    "user_id": "user-001",
+    "action": "SCAN_DELETED",
+    "resource_type": "Scan",
+    "resource_id": "f58bb2a8",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:11Z",
+    "details": {
+      "scan_id": "f58bb2a8",
+      "details": "Registro de varredura excluído pelo operador."
+    }
+  },
+  {
+    "id": "audit-0fb88c43",
+    "user_id": "user-001",
+    "action": "ASSET_DELETED",
+    "resource_type": "Asset",
+    "resource_id": "f58bb2a8-asset-0",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:17Z",
+    "details": {
+      "asset_id": "f58bb2a8-asset-0"
+    }
+  },
+  {
+    "id": "audit-4d3f46d4",
+    "user_id": "user-001",
+    "action": "ASSET_DELETED",
+    "resource_type": "Asset",
+    "resource_id": "f58bb2a8-asset-1",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:17Z",
+    "details": {
+      "asset_id": "f58bb2a8-asset-1"
+    }
+  },
+  {
+    "id": "audit-13ba19fc",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "f58bb2a8-F0001",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:21Z",
+    "details": {
+      "finding_id": "f58bb2a8-F0001"
+    }
+  },
+  {
+    "id": "audit-46c01aae",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "f58bb2a8-F0002",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:21Z",
+    "details": {
+      "finding_id": "f58bb2a8-F0002"
+    }
+  },
+  {
+    "id": "audit-80639637",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "f58bb2a8-F0003",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:22Z",
+    "details": {
+      "finding_id": "f58bb2a8-F0003"
+    }
+  },
+  {
+    "id": "audit-5afb6ff3",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "f58bb2a8-F0004",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:22Z",
+    "details": {
+      "finding_id": "f58bb2a8-F0004"
+    }
+  },
+  {
+    "id": "audit-849a7a64",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "f58bb2a8-F0005",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:22Z",
+    "details": {
+      "finding_id": "f58bb2a8-F0005"
+    }
+  },
+  {
+    "id": "audit-75afe6c3",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "f58bb2a8-F0008",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:24Z",
+    "details": {
+      "finding_id": "f58bb2a8-F0008"
+    }
+  },
+  {
+    "id": "audit-198681f1",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "f58bb2a8-F0007",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:25Z",
+    "details": {
+      "finding_id": "f58bb2a8-F0007"
+    }
+  },
+  {
+    "id": "audit-73f82eb8",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "f58bb2a8-F0006",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:26Z",
+    "details": {
+      "finding_id": "f58bb2a8-F0006"
+    }
+  },
+  {
+    "id": "audit-61c4ce55",
+    "user_id": "user-001",
+    "action": "SCAN_STARTED",
+    "resource_type": "Scan",
+    "resource_id": "65bf8605",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:51Z",
+    "details": {
+      "url": "https://www.bancostellantis.com.br/",
+      "max_depth": 3,
+      "max_urls": 100
+    }
+  },
+  {
+    "id": "audit-c037e3ab",
+    "user_id": "user-001",
+    "action": "SCAN_COMPLETED",
+    "resource_type": "Scan",
+    "resource_id": "65bf8605",
+    "project_id": "proj-65bf8605",
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:19:58Z",
+    "details": {
+      "url": "https://www.bancostellantis.com.br/",
+      "project_id": "proj-65bf8605",
+      "findings_count": 8,
+      "critical": 0,
+      "high": 0,
+      "urls_found": 2,
+      "duration_s": 7
+    }
+  },
+  {
+    "id": "audit-4784c6de",
+    "user_id": "user-001",
+    "action": "OSINT_FINDINGS_REGISTERED",
+    "resource_type": "Finding",
+    "resource_id": "stellantis.com",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T20:22:13Z",
+    "details": {
+      "target": "stellantis.com",
+      "registered_count": 2,
+      "threat_level": "EXPOSIÇÃO MODERADA"
+    }
   }
 ]

@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": "proj-65bf8605",
+    "name": "Scan — https://www.bancostellantis.com.br/",
+    "client": "Live Scan",
+    "business_unit": "Automated",
+    "description": "Automated scan of https://www.bancostellantis.com.br/",
+    "owner_id": "user-001",
+    "status": "COMPLETED",
+    "start_date": "2026-09-06T20:19:51Z",
+    "end_date": null,
+    "created_at": "2026-09-06T20:19:51Z",
+    "updated_at": "2026-09-06T20:19:51Z",
+    "findings_count": 8,
+    "assets_count": 2,
+    "critical_count": 0,
+    "high_count": 0,
+    "risk_score": 31
+  }
+]
