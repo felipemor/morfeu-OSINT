@@ -1,0 +1,336 @@
+[
+  {
+    "id": "audit-f0a0cd79",
+    "user_id": "user-001",
+    "action": "SCAN_STARTED",
+    "resource_type": "Scan",
+    "resource_id": "7ab0d94c",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:09:12Z",
+    "details": {
+      "url": "https://www.bancostellantis.com.br/",
+      "max_depth": 2,
+      "max_urls": 50
+    }
+  },
+  {
+    "id": "audit-b2c86ad4",
+    "user_id": "user-001",
+    "action": "SCAN_COMPLETED",
+    "resource_type": "Scan",
+    "resource_id": "7ab0d94c",
+    "project_id": "proj-7ab0d94c",
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:09:19Z",
+    "details": {
+      "url": "https://www.bancostellantis.com.br/",
+      "project_id": "proj-7ab0d94c",
+      "findings_count": 8,
+      "critical": 0,
+      "high": 0,
+      "urls_found": 2,
+      "duration_s": 7
+    }
+  },
+  {
+    "id": "audit-d39c5716",
+    "user_id": "user-001",
+    "action": "OSINT_FINDINGS_REGISTERED",
+    "resource_type": "Finding",
+    "resource_id": "stellantis.com",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:09:53Z",
+    "details": {
+      "target": "stellantis.com",
+      "registered_count": 2,
+      "threat_level": "EXPOSIÇÃO MODERADA"
+    }
+  },
+  {
+    "id": "audit-517f6d1c",
+    "user_id": "user-001",
+    "action": "ASSET_DELETED",
+    "resource_type": "Asset",
+    "resource_id": "7ab0d94c-asset-0",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:16:07Z",
+    "details": {
+      "asset_id": "7ab0d94c-asset-0"
+    }
+  },
+  {
+    "id": "audit-0e5d0571",
+    "user_id": "user-001",
+    "action": "ASSET_DELETED",
+    "resource_type": "Asset",
+    "resource_id": "7ab0d94c-asset-1",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:16:10Z",
+    "details": {
+      "asset_id": "7ab0d94c-asset-1"
+    }
+  },
+  {
+    "id": "audit-278ffc48",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "osint-7534478b",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:16:18Z",
+    "details": {
+      "finding_id": "osint-7534478b"
+    }
+  },
+  {
+    "id": "audit-fb9efe53",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "osint-8ae63835",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:02Z",
+    "details": {
+      "finding_id": "osint-8ae63835"
+    }
+  },
+  {
+    "id": "audit-93425640",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "FND-001",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:03Z",
+    "details": {
+      "finding_id": "FND-001"
+    }
+  },
+  {
+    "id": "audit-8a0e6592",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "FND-002",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:04Z",
+    "details": {
+      "finding_id": "FND-002"
+    }
+  },
+  {
+    "id": "audit-16b7d0b8",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "FND-003",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:04Z",
+    "details": {
+      "finding_id": "FND-003"
+    }
+  },
+  {
+    "id": "audit-a9b5b81d",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "FND-004",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:05Z",
+    "details": {
+      "finding_id": "FND-004"
+    }
+  },
+  {
+    "id": "audit-8d9b0865",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "7ab0d94c-F0001",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:05Z",
+    "details": {
+      "finding_id": "7ab0d94c-F0001"
+    }
+  },
+  {
+    "id": "audit-196a7ef6",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "7ab0d94c-F0002",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:06Z",
+    "details": {
+      "finding_id": "7ab0d94c-F0002"
+    }
+  },
+  {
+    "id": "audit-010bb085",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "7ab0d94c-F0003",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:06Z",
+    "details": {
+      "finding_id": "7ab0d94c-F0003"
+    }
+  },
+  {
+    "id": "audit-d1481fe8",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "7ab0d94c-F0004",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:07Z",
+    "details": {
+      "finding_id": "7ab0d94c-F0004"
+    }
+  },
+  {
+    "id": "audit-80402fb8",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "7ab0d94c-F0005",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:07Z",
+    "details": {
+      "finding_id": "7ab0d94c-F0005"
+    }
+  },
+  {
+    "id": "audit-a67ee502",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "7ab0d94c-F0006",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:08Z",
+    "details": {
+      "finding_id": "7ab0d94c-F0006"
+    }
+  },
+  {
+    "id": "audit-6ae9cd3d",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "7ab0d94c-F0007",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:11Z",
+    "details": {
+      "finding_id": "7ab0d94c-F0007"
+    }
+  },
+  {
+    "id": "audit-ab047dab",
+    "user_id": "user-001",
+    "action": "FINDING_DELETED",
+    "resource_type": "Finding",
+    "resource_id": "7ab0d94c-F0008",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:18:12Z",
+    "details": {
+      "finding_id": "7ab0d94c-F0008"
+    }
+  },
+  {
+    "id": "audit-5ef7f33e",
+    "user_id": "user-001",
+    "action": "OSINT_FINDINGS_REGISTERED",
+    "resource_type": "Finding",
+    "resource_id": "stellantis.com",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:26:53Z",
+    "details": {
+      "target": "stellantis.com",
+      "registered_count": 2,
+      "threat_level": "EXPOSIÇÃO MODERADA"
+    }
+  },
+  {
+    "id": "audit-653c252d",
+    "user_id": "user-001",
+    "action": "AUDIT_LOG_CLEAR_ATTEMPTED",
+    "resource_type": "AuditTrail",
+    "resource_id": "clear",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:37:16Z",
+    "details": {
+      "details": "Solicitação de reset da trilha de auditoria efetuada. Registro imutável conservado para auditoria e troubleshooting."
+    }
+  },
+  {
+    "id": "audit-80017534",
+    "user_id": "user-001",
+    "action": "DATASET_RESET_EXECUTED",
+    "resource_type": "System",
+    "resource_id": "reset-all",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:37:18Z",
+    "details": {
+      "details": "Limpeza de projetos, achados e scans efetuada. Trilha de auditoria conservada na íntegra para suporte e troubleshooting."
+    }
+  },
+  {
+    "id": "audit-71d2a243",
+    "user_id": "user-001",
+    "action": "AUDIT_LOG_CLEAR_ATTEMPTED",
+    "resource_type": "AuditTrail",
+    "resource_id": "clear",
+    "project_id": null,
+    "ip_address": "127.0.0.1",
+    "result": "SUCCESS",
+    "timestamp": "2026-09-06T18:38:13Z",
+    "details": {
+      "details": "Solicitação de reset da trilha de auditoria efetuada. Registro imutável conservado para auditoria e troubleshooting."
+    }
+  }
+]
