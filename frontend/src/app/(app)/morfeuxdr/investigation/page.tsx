@@ -1,10 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { SearchCode, Clock, ShieldAlert, FileText, CheckCircle2, User, Terminal, Code, Cpu, ScrollText } from 'lucide-react';
 import { morfeuXdrApi } from '@/lib/api';
 
-export default function InvestigationPage() {
+function InvestigationContent() {
   const searchParams = useSearchParams();
   const findingId = searchParams.get('id') || 'fnd-default';
   const [data, setData] = useState<any>(null);
@@ -180,3 +180,16 @@ export default function InvestigationPage() {
     </div>
   );
 }
+
+export default function InvestigationPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500" />
+      </div>
+    }>
+      <InvestigationContent />
+    </Suspense>
+  );
+}
+
