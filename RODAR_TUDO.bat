@@ -40,7 +40,8 @@ echo.
 :: [2/4] Preparar Backend & Scanner
 :: -------------------------------------------------------------------------
 echo [2/4] Verificando ambiente Python do Scanner Backend (Porta 8000)...
-cd /d "%~dp0scanner"
+cd /d "%~dp0"
+cd scanner
 
 if not exist ".venv" (
     echo [INFO] Criando ambiente virtual Python (.venv)...
@@ -58,14 +59,15 @@ cd /d "%~dp0"
 
 echo.
 echo [INFO] Iniciando Scanner Backend em segundo plano (http://localhost:8000)...
-start "morfeusec Scanner Backend (Porta 8000)" cmd /k "cd /d "%~dp0scanner" && call .venv\Scripts\activate.bat && python main.py"
+start "morfeusec Scanner Backend" cmd /k "cd /d %~dp0scanner && call .venv\Scripts\activate.bat && python main.py"
 
 :: -------------------------------------------------------------------------
 :: [3/4] Preparar Frontend Next.js
 :: -------------------------------------------------------------------------
 echo.
 echo [3/4] Preparando Frontend Next.js (Porta 3000)...
-cd /d "%~dp0frontend"
+cd /d "%~dp0"
+cd frontend
 
 if not exist "node_modules" (
     echo [INFO] Primeira execucao detectada. Instalando pacotes npm...
