@@ -2,30 +2,64 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectsApi, type Project } from '@/lib/api';
 import Link from 'next/link';
-import { FolderKanban, ChevronRight, Bug, Globe, AlertTriangle, Trash2 } from 'lucide-react';
+import { FolderKanban, ChevronRight, Bug, Globe, AlertTriangle, Trash2, Plus, X, Calendar } from 'lucide-react';
 import clsx from 'clsx';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const SCANNER_URL = 'http://localhost:8000';
 
 export default function ProjectsPage() {
   const [search, setSearch] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newProjectName, setNewProjectName] = useState('');
+  const [newProjectClient, setNewProjectClient] = useState('');
+  const [newProjectDesc, setNewProjectDesc] = useState('');
+  const [newProjectStart, setNewProjectStart] = useState(new Date().toISOString().split('T')[0]);
+  const [newProjectEnd, setNewProjectEnd] = useState('');
+
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { data: projects = [], isLoading } = useQuery({ queryKey: ['projects'], queryFn: projectsApi.list });
 
+  const createProject = useMutation({
+    mutationFn: async () => {
+      if (!newProjectName.trim()) throw new Error('Nome do projeto é obrigatório');
+      return await projectsApi.create({
+        name: newProjectName.trim(),
+        client: newProjectClient.trim() || 'Alvo de Pentest',
+        description: newProjectDesc.trim(),
+        start_date: newProjectStart || undefined,
+        end_date: newProjectEnd || undefined,
+        status: 'ACTIVE',
+      });
+    },
+    onSuccess: (project) => {
+      toast.success('Projeto criado com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      setShowCreateModal(false);
+      setNewProjectName('');
+      setNewProjectClient('');
+      setNewProjectDesc('');
+      setNewProjectEnd('');
+      // Navigate to new project
+      router.push(`/projects/${project.id}`);
+    },
+    onError: (e: any) => toast.error(`Erro ao criar projeto: ${e.message}`),
+  });
+
   const deleteProject = useMutation({
     mutationFn: async (id: string) => {
-      const scanId = id.replace('proj-', '').replace('scan-', '');
-      const res = await fetch(`${SCANNER_URL}/scan/${scanId}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Failed to delete project');
-      return res.json();
+      return await projectsApi.delete(id);
     },
     onSuccess: () => {
-      toast.success('Project deleted successfully');
+      toast.success('Projeto excluído com sucesso');
       queryClient.invalidateQueries({ queryKey: ['projects'] });
+      queryClient.invalidateQueries({ queryKey: ['all-findings'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard-summary'] });
     },
-    onError: () => toast.error('Failed to delete project'),
+    onError: (e: any) => toast.error(`Erro ao deletar projeto: ${e.message || 'Falha na operação'}`),
   });
 
   const filtered = projects.filter((p: Project) =>
@@ -50,6 +84,14 @@ export default function ProjectsPage() {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="btn-primary px-4 py-2 text-sm font-bold flex items-center gap-2 rounded-xl"
+          >
+            <Plus className="w-4 h-4" />
+            Criar Projeto
+          </button>
+
           <a
             href="http://localhost:8000/api/v1/powerbi/projects"
             target="_blank"
@@ -76,10 +118,106 @@ export default function ProjectsPage() {
             className="btn-danger px-4 py-2 text-xs font-bold flex items-center gap-2 rounded-xl"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            Limpar Todos os Projetos
+            Limpar Todos
           </button>
         </div>
       </div>
+
+      {/* Create Project Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="glass-card w-full max-w-lg p-6 space-y-4 border border-accent-cyan/20 shadow-2xl shadow-accent-cyan/10">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
+                <FolderKanban className="w-5 h-5 text-accent-cyan" />
+                Criar Novo Projeto de Pentest
+              </h2>
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="text-slate-500 hover:text-red-400 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs text-slate-400 mb-1 block">Nome do Projeto *</label>
+                <input
+                  className="input-field"
+                  placeholder="ex: Pentest Aplicação Web — Cliente XYZ"
+                  value={newProjectName}
+                  onChange={e => setNewProjectName(e.target.value)}
+                  autoFocus
+                />
+              </div>
+
+              <div>
+                <label className="text-xs text-slate-400 mb-1 block">Cliente / Organização</label>
+                <input
+                  className="input-field"
+                  placeholder="ex: Empresa S/A"
+                  value={newProjectClient}
+                  onChange={e => setNewProjectClient(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="text-xs text-slate-400 mb-1 block">Descrição</label>
+                <textarea
+                  className="input-field resize-none"
+                  rows={2}
+                  placeholder="Escopo e objetivos do pentest..."
+                  value={newProjectDesc}
+                  onChange={e => setNewProjectDesc(e.target.value)}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-slate-400 mb-1 block flex items-center gap-1">
+                    <Calendar className="w-3 h-3" /> Início
+                  </label>
+                  <input
+                    type="date"
+                    className="input-field"
+                    value={newProjectStart}
+                    onChange={e => setNewProjectStart(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-slate-400 mb-1 block flex items-center gap-1">
+                    <Calendar className="w-3 h-3" /> Término (opcional)
+                  </label>
+                  <input
+                    type="date"
+                    className="input-field"
+                    value={newProjectEnd}
+                    onChange={e => setNewProjectEnd(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => createProject.mutate()}
+                disabled={!newProjectName.trim() || createProject.isPending}
+                className="btn-primary flex-1 justify-center py-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {createProject.isPending ? (
+                  <><span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" /> Criando...</>
+                ) : (
+                  <><Plus className="w-4 h-4" /> Criar Projeto &amp; Abrir Hub</>
+                )}
+              </button>
+              <button onClick={() => setShowCreateModal(false)} className="btn-ghost px-4 border border-slate-700">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* KPI & Indicators Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

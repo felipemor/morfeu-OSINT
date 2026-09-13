@@ -1,5 +1,5 @@
 """
-Unified Master Audit & Remediation Excel .xlsx Generator (Big-4 Standard)
+Unified Master Audit & Remediation Excel .xlsx Generator (Enterprise Audit Standard)
 morfeusec OSINT Platform
 Creates multi-tab workbook:
 1. Visao Geral Executiva (KPIs & Compliance)
@@ -71,7 +71,7 @@ def generate_unified_master_xlsx_bytes(target_url: str = "https://app.shieldsecu
 
     # ─── TAB 1: EXECUTIVE SUMMARY ───────────────────────────────────────────
     ws1 = wb.active
-    ws1.title = "Visão Executiva Big-4"
+    ws1.title = "Visão Executiva Governança"
 
     ws1.merge_cells("A1:G1")
     ws1["A1"] = "LAUDO TÉCNICO-EXECUTIVO CONSOLIDADO DE AUDITORIA E CONFORMIDADE CIBERNÉTICA"

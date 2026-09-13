@@ -2,30 +2,69 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Shield, LayoutDashboard, FolderKanban, Globe,
-  Bug, ScrollText, ChevronLeft, ChevronRight, LogOut, User, Crosshair, FileText, Radar, ShieldCheck, Smartphone, Activity, Network, ShieldAlert, BarChart2, BarChart3, ExternalLink, Sparkles, Users, Crown
+  Bug, ScrollText, ChevronLeft, ChevronRight, ChevronDown, LogOut, User, Crosshair, FileText, Radar, ShieldCheck, Smartphone, Activity, Network, ShieldAlert, BarChart2, BarChart3, ExternalLink, Sparkles, Users, Crown, Code2, Award, FileCheck2, Layers, Search, Bot, Wrench, CheckSquare
 } from 'lucide-react';
 import { authApi } from '@/lib/api';
 import clsx from 'clsx';
-import PowerBIModal from '@/components/PowerBIModal';
-import UnifiedMasterReportModal from '@/components/UnifiedMasterReportModal';
+import CommandPalette from '@/components/CommandPalette';
 
-const navigation = [
-  { name: 'Grafana Analytics', href: '/grafana-analytics', icon: BarChart2 },
-  { name: 'Dashboard Executivo', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'MorfeuXDR', href: '/morfeuxdr', icon: ShieldAlert },
-  { name: 'Mobile Analytics', href: '/mobile-dashboard', icon: Activity },
-  { name: 'Microsegmentação', href: '/microsegmentation', icon: Network },
-  { name: 'Scanner', href: '/scan', icon: Crosshair },
-  { name: 'Mobile Pentest (APK/iOS)', href: '/mobile-pentest', icon: Smartphone },
-  { name: 'OSINT Intelligence', href: '/osint', icon: Radar },
-  { name: 'Controles de Segurança', href: '/security-controls', icon: ShieldCheck },
-  { name: 'Reports', href: '/reports', icon: FileText },
-  { name: 'Projects', href: '/projects', icon: FolderKanban },
-  { name: 'Attack Surface', href: '/attack-surface', icon: Globe },
-  { name: 'Findings', href: '/findings', icon: Bug },
-  { name: 'Audit Logs', href: '/audit-logs', icon: ScrollText },
+// Dynamic imports para otimização do FCP e redução do bundle inicial
+const PowerBIModal = dynamic(() => import('@/components/PowerBIModal'), { ssr: false });
+const UnifiedMasterReportModal = dynamic(() => import('@/components/UnifiedMasterReportModal'), { ssr: false });
+const SecurityCopilotModal = dynamic(() => import('@/components/SecurityCopilotModal'), { ssr: false });
+
+const navigationCategories = [
+  {
+    id: 'governance',
+    title: 'Governança & Analytics',
+    items: [
+      { name: 'Dashboard Executivo', href: '/dashboard', icon: LayoutDashboard },
+      { name: 'Governança Tri-Pilar', href: '/executive-governance', icon: ShieldCheck },
+      { name: 'Grafana Analytics', href: '/grafana-analytics', icon: BarChart2 },
+    ]
+  },
+  {
+    id: 'offensive',
+    title: 'Operações Ofensivas & EASM',
+    items: [
+      { name: 'Scanner Multi-URLs', href: '/scan', icon: Crosshair },
+      { name: 'Attack Surface', href: '/attack-surface', icon: Globe },
+      { name: 'OSINT Intelligence', href: '/osint', icon: Radar },
+      { name: 'Mobile Pentest (APK/iOS)', href: '/mobile-pentest', icon: Smartphone },
+    ]
+  },
+  {
+    id: 'vulnerabilities',
+    title: 'Vulnerabilidades & Risco',
+    items: [
+      { name: 'Central de Findings', href: '/findings', icon: Bug },
+      { name: 'Guia de Remediação', href: '/remediation', icon: Wrench },
+      { name: 'Evidence Vault (SHA-256)', href: '/evidence-vault', icon: FileCheck2 },
+      { name: 'Correlation & Risco', href: '/correlation', icon: Network },
+    ]
+  },
+  {
+    id: 'posture',
+    title: 'Postura & Compliance',
+    items: [
+      { name: 'Controles de Segurança', href: '/security-controls', icon: ShieldCheck },
+      { name: 'AppSec / ASPM Posture', href: '/aspm', icon: Code2 },
+      { name: 'Compliance & BACEN', href: '/compliance', icon: Award },
+    ]
+  },
+  {
+    id: 'operations',
+    title: 'Operações & Sistema',
+    items: [
+      { name: 'Projetos', href: '/projects', icon: FolderKanban },
+      { name: 'Central de Reports', href: '/reports', icon: FileText },
+      { name: 'Hub de Conectores', href: '/integrations', icon: Layers },
+      { name: 'Audit Logs', href: '/audit-logs', icon: ScrollText },
+    ]
+  },
 ];
 
 export default function Sidebar() {
@@ -35,10 +74,30 @@ export default function Sidebar() {
   const [user, setUser] = useState<any>(null);
   const [isPowerBIOpen, setIsPowerBIOpen] = useState(false);
   const [isMasterReportOpen, setIsMasterReportOpen] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
+  
+  // Categorias expandidas por padrão. Se houver caminho ativo, a categoria correspondente é expandida.
+  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({
+    governance: true,
+    offensive: true,
+    vulnerabilities: true,
+    posture: true,
+    operations: true,
+  });
+
+  useEffect(() => {
+    (window as any).__openCommandPalette = () => setIsCommandPaletteOpen(true);
+    (window as any).__openCopilot = () => setIsCopilotOpen(true);
+  }, []);
 
   useEffect(() => {
     setUser(authApi.getUser());
   }, []);
+
+  const toggleCategory = (catId: string) => {
+    setOpenCategories(prev => ({ ...prev, [catId]: !prev[catId] }));
+  };
 
   const handleLogout = () => {
     authApi.logout();
@@ -68,8 +127,43 @@ export default function Sidebar() {
           </button>
         </div>
 
-        {/* PowerBI & Big-4 Master Report Buttons */}
+        {/* Global Tools Header Buttons */}
         <div className="p-2 border-b border-bg-border/60 space-y-1.5">
+          {/* Global Search / Command Palette (Ctrl+K) */}
+          <button
+            onClick={() => setIsCommandPaletteOpen(true)}
+            className={clsx(
+              "w-full px-3 py-2 rounded-xl font-bold text-xs flex items-center gap-2.5 transition-all shadow-md",
+              "bg-slate-900/90 border border-slate-700 text-slate-300 hover:border-accent-cyan hover:text-accent-cyan group"
+            )}
+            title="Abrir busca global da plataforma (CTRL + K)"
+          >
+            <Search className="w-4 h-4 flex-shrink-0 text-accent-cyan group-hover:scale-110 transition-transform" />
+            {!collapsed && (
+              <div className="flex items-center justify-between flex-1">
+                <span className="truncate text-left">Busca Global</span>
+                <kbd className="px-1.5 py-0.5 text-[9px] font-mono bg-slate-800 border border-slate-700 text-slate-400 rounded">
+                  Ctrl+K
+                </kbd>
+              </div>
+            )}
+          </button>
+
+          {/* Security Copilot (AI Analyst) */}
+          <button
+            onClick={() => setIsCopilotOpen(true)}
+            className={clsx(
+              "w-full px-3 py-2 rounded-xl font-bold text-xs flex items-center gap-2.5 transition-all shadow-md",
+              "bg-gradient-to-r from-purple-500/20 via-accent-cyan/20 to-purple-500/10 border border-purple-500/40 text-purple-200 hover:border-accent-cyan hover:text-accent-cyan group"
+            )}
+            title="Abrir Security Copilot — IA Analista de Postura e Governança"
+          >
+            <Bot className="w-4 h-4 flex-shrink-0 text-accent-cyan group-hover:scale-110 transition-transform" />
+            {!collapsed && (
+              <span className="truncate flex-1 text-left font-extrabold">Security Copilot (IA)</span>
+            )}
+          </button>
+
           <button
             onClick={() => setIsPowerBIOpen(true)}
             className={clsx(
@@ -80,7 +174,7 @@ export default function Sidebar() {
           >
             <BarChart3 className="w-4 h-4 flex-shrink-0 text-yellow-400 group-hover:scale-110 transition-transform" />
             {!collapsed && (
-              <span className="truncate flex-1 text-left">Quer integrar ao PowerBI?</span>
+              <span className="truncate flex-1 text-left">PowerBI REST APIs</span>
             )}
           </button>
 
@@ -94,13 +188,13 @@ export default function Sidebar() {
           >
             <Sparkles className="w-4 h-4 flex-shrink-0 text-accent-cyan group-hover:rotate-12 transition-transform" />
             {!collapsed && (
-              <span className="truncate flex-1 text-left font-extrabold">Laudo Consolidado de Auditoria</span>
+              <span className="truncate flex-1 text-left font-extrabold">Laudo Consolidado</span>
             )}
           </button>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 py-3 px-2 space-y-0.5 overflow-y-auto">
+        {/* Categorized Nav */}
+        <nav className="flex-1 py-3 px-2 space-y-3 overflow-y-auto custom-scrollbar">
           {user?.role === 'ADMIN' && (
             <Link
               href="/admin/users"
@@ -115,14 +209,41 @@ export default function Sidebar() {
             </Link>
           )}
 
-          {navigation.map(item => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+          {navigationCategories.map(cat => {
+            const hasActiveChild = cat.items.some(item => pathname === item.href || pathname.startsWith(item.href + '/'));
+            const isOpen = openCategories[cat.id] ?? true;
+
             return (
-              <Link key={item.href} href={item.href}
-                className={clsx('sidebar-item', isActive && 'active', collapsed && 'justify-center px-0')}>
-                <item.icon className={clsx('flex-shrink-0', collapsed ? 'w-5 h-5' : 'w-4 h-4')} />
-                {!collapsed && <span className="truncate">{item.name}</span>}
-              </Link>
+              <div key={cat.id} className="space-y-1">
+                {!collapsed && (
+                  <button
+                    onClick={() => toggleCategory(cat.id)}
+                    className="w-full flex items-center justify-between px-2 py-1 text-[11px] font-bold tracking-wider text-slate-400 uppercase hover:text-accent-cyan transition-colors"
+                  >
+                    <span className="truncate">{cat.title}</span>
+                    <ChevronDown className={clsx('w-3 h-3 transition-transform duration-200', !isOpen && '-rotate-90')} />
+                  </button>
+                )}
+
+                {(isOpen || collapsed) && (
+                  <div className="space-y-0.5">
+                    {cat.items.map(item => {
+                      const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={clsx('sidebar-item', isActive && 'active', collapsed && 'justify-center px-0')}
+                          title={collapsed ? item.name : undefined}
+                        >
+                          <item.icon className={clsx('flex-shrink-0', collapsed ? 'w-5 h-5' : 'w-4 h-4')} />
+                          {!collapsed && <span className="truncate">{item.name}</span>}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>
@@ -158,10 +279,14 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      <PowerBIModal isOpen={isPowerBIOpen} onClose={() => setIsPowerBIOpen(false)} />
-      <UnifiedMasterReportModal isOpen={isMasterReportOpen} onClose={() => setIsMasterReportOpen(false)} />
+      {isPowerBIOpen && <PowerBIModal isOpen={isPowerBIOpen} onClose={() => setIsPowerBIOpen(false)} />}
+      {isMasterReportOpen && <UnifiedMasterReportModal isOpen={isMasterReportOpen} onClose={() => setIsMasterReportOpen(false)} />}
+      <CommandPalette isOpen={isCommandPaletteOpen} onClose={() => setIsCommandPaletteOpen(false)} />
+      {isCopilotOpen && <SecurityCopilotModal isOpen={isCopilotOpen} onClose={() => setIsCopilotOpen(false)} />}
     </>
   );
 }
+
+
 
 

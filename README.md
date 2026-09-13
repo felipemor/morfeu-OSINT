@@ -4,7 +4,7 @@
 
 ![morfeusec OSINT Logo](frontend/public/morfeusec-logo.png)
 
-**Plataforma Integrada de Reconhecimento de Perímetro (OSINT), Mobile Pentest Autônomo (OWASP MASVS v2.0), Central Grafana Analytics & Telemetria, MorfeuXDR (Wazuh/eBPF) e Validação Contínua de Controles de Segurança (BACEN CMN 4.893 & NIST SP 800-115)**
+**Plataforma Integrada de Reconhecimento de Perímetro (OSINT), Mobile Pentest Autônomo (OWASP MASVS v2.0), Central Grafana Analytics & Telemetria e Validação Contínua de Controles de Segurança (BACEN CMN 4.893, ISO/IEC 27001 & NIST SP 800-115)**
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110.0-009688.svg?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black.svg?style=flat&logo=next.js)](https://nextjs.org/)
@@ -31,8 +31,7 @@
    - [📈 Central Executiva Grafana Analytics & Telemetria](#2--central-executiva-grafana-analytics--telemetria)
    - [🌐 Reconhecimento de Perímetro OSINT (Maltego Visual Engine)](#3--reconhecimento-de-perímetro-osint-maltego-visual-engine)
    - [📱 Autonomous Mobile Pentest & Fleet Governance](#4--autonomous-mobile-pentest--fleet-governance)
-   - [🛡️ MorfeuXDR, Microsegmentação e Deception Honeypot](#5-️-morfeuxdr-microsegmentação-e-deception-honeypot)
-   - [🔒 32 Controles de Segurança & BACEN CMN 4.893](#6--32-controles-de-segurança--bacen-cmn-4893)
+   - [🔒 32 Controles de Segurança & BACEN CMN 4.893](#5--32-controles-de-segurança--bacen-cmn-4893)
 5. [📄 Motor de Relatórios & Laudos Técnicos em PDF](#-motor-de-relatórios--laudos-técnicos-em-pdf)
 6. [🗺️ Mapa de Rotas e Endpoints da API](#️-mapa-de-rotas-e-endpoints-da-api)
 7. [⚡ Guia de Instalação e Execução](#-guia-de-instalação-e-execução)
@@ -43,12 +42,11 @@
 
 ## 🌟 Visão Geral Executiva
 
-O **morfeusec OSINT** é uma plataforma corporativa de segurança ofensiva, Deception Technology e gestão contínua de exposição a ameaças (*Continuous Threat Exposure Management - CTEM*). Foi concebida para atender tanto às auditorias de segurança de alto rigor (**Big4: PwC, Deloitte, EY, KPMG**, reguladores financeiros **BACEN / CVM**) quanto aos padrões de experiência e interface de produtos de tecnologia de ponta (**Google Security & Microsoft Defender**).
+O **morfeusec OSINT** é uma plataforma corporativa de segurança ofensiva, Deception Technology e gestão contínua de exposição a ameaças (*Continuous Threat Exposure Management - CTEM*). Foi concebida para atender aos mais altos padrões de auditoria independente e órgãos reguladores do setor financeiro (**BACEN / CVM / ISO/IEC 27001 / NIST**).
 
 A plataforma consolida em uma única suíte:
-- **Central Grafana Analytics & Telemetria**: Hub unificado de dashboards correlacionando métricas de infraestrutura, Deception Honeypot, grafo de vetores de ataque e telemetria Prometheus em tempo real (500ms).
-- **Inteligência de Superfície de Ataque (EASM / OSINT)** em estilo Maltego interativo com auto-persistência em `AuditLog` e registro automático em `Finding`.
-- **SIEM/XDR MorfeuXDR & Microsegmentação eBPF Zero Trust**: Integração com agentes Wazuh e políticas dinâmicas de microsegmentação de rede.
+- **Central Grafana Analytics & Telemetria**: Hub unificado de dashboards correlacionando métricas de infraestrutura, Deception Honeypot, grafo de vetores de ataque e telemetria Prometheus em tempo real.
+- **Inteligência de Superfície de Ataque (EASM / OSINT)** em topologia interativa com auto-persistência em `AuditLog` e registro automático em `Finding`.
 - **Deception Honeypot Remoto**: Módulo de engodo instalado em servidores externos que reporta indicadores de compromisso (IoCs) diretamente para a console via API ingestora `POST /api/v1/grafana-analytics/honeypot/report`.
 - **Auditoria Estática e Dinâmica Autônoma de Aplicativos Móveis (Android APK & iOS IPA)** sob as diretrizes do **OWASP MASVS v2.0**.
 - **Validação Automatizada de 32 Controles Críticos de Segurança** alinhados à **Resolução CMN nº 4.893 do BACEN**, **NIST SP 800-115** e **CIS Controls v8**.
@@ -63,7 +61,7 @@ A arquitetura do **morfeusec OSINT** adota o padrão **Decoupled Micro-Services,
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                          morfeusec OSINT                                              │
-│                                 ENTERPRISE OFFENSIVE SECURITY PLATFORM                                 │
+│                                 ENTERPRISE OFFENSIVE SECURITY PLATFORM                                │
 └──────────────────────────────────┬────────────────────────────────────────────────────────────────────┘
                                    │
                                    ▼
@@ -71,10 +69,9 @@ A arquitetura do **morfeusec OSINT** adota o padrão **Decoupled Micro-Services,
 │ 1. APRESENTAÇÃO & INTERFACE (Next.js 14 App Router + TypeScript + Tailwind CSS)                       │
 ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤
 │ • /login              -> Autenticação Zero-Trust (TOTP 2FA + QR Code 2D Escaneável + Biometria)       │
+│ • /dashboard          -> Painel Executivo Principal e Threat Intelligence Posture                     │
 │ • /grafana-analytics  -> Central Unificada de Telemetria (Dashboards, Attack Graph, Honeypot, Prometheus) │
-│ • /osint              -> Reconhecimento de Perímetro (Maltego Graph, DoH, CT Logs, AuditLog, Findings)│
-│ • /morfeuxdr          -> SIEM/XDR Corporativo (Guia Wazuh, Correlação de Eventos e Agentes)           │
-│ • /microsegmentation  -> Microsegmentação eBPF Hybrid Zero Trust (Políticas e Isolamento de Rede)      │
+│ • /osint              -> Reconhecimento de Perímetro (Network Topology Graph, DoH, CT Logs, Findings) │
 │ • /mobile-dashboard   -> Governança de Frotas Mobile (Fleet Threat Index, Radar MASVS, CI/CD Gates)   │
 │ • /mobile-pentest     -> Análise SAST/DAST de Binários Android (.apk) e iOS (.ipa)                    │
 │ • /security-controls  -> Auditoria dos 32 Controles BACEN CMN 4.893 & NIST SP 800-115                 │

@@ -1,16 +1,1 @@
-[
-  {
-    "id": "scan-65bf8605",
-    "project_id": "proj-65bf8605",
-    "mode": "SAFE_ACTIVE",
-    "status": "COMPLETED",
-    "progress": 100,
-    "current_phase": "COMPLETED",
-    "assets_discovered": 2,
-    "endpoints_found": 0,
-    "findings_count": 8,
-    "started_at": "2026-09-06T20:19:51Z",
-    "completed_at": null,
-    "created_at": "2026-09-06T20:19:51Z"
-  }
-]
+[]

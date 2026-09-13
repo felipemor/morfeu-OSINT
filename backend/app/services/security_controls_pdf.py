@@ -1,5 +1,5 @@
 """
-Security Controls PDF Report Generator — Big-4 Standard Audit & Compliance Report
+Security Controls PDF Report Generator — Enterprise Audit & Compliance Report
 Generates executive and technical PDF validation reports for External URL Security Controls.
 """
 import io
@@ -201,6 +201,44 @@ def build_security_controls_pdf(
     ]))
     story.append(c_table)
     story.append(Spacer(1, 6 * mm))
+
+    # ─── 4.1 Remediation Action Plan (Passo a Passo) ───────────────────────────
+    failed_controls = [c for c in controls_results if c.get("status") != "PASSED"]
+    if failed_controls:
+        story.append(Paragraph("<b>Plano de Ação e Passo a Passo Completo de Remediação</b>", h2_style))
+        story.append(Paragraph("Instruções detalhadas para correção técnica dos controles identificados como Não Conformes:", body_style))
+        story.append(Spacer(1, 2 * mm))
+
+        rem_table_data = [["Controle", "Passo a Passo Recomendado para Resolução / Mitigação"]]
+        for fc in failed_controls:
+            fc_id = fc.get("id", "SEC-EXT")
+            fc_name = fc.get("name", "Controle")
+            fc_rec = fc.get("remediation_steps") or [
+                f"Passo 1: Identificar e isolar a causa raiz em {target_url}.",
+                f"Passo 2: Aplicar as diretivas recomendadas em {fc.get('standard_ref', 'CIS / OWASP')}.",
+                "Passo 3: Validar a persistência do parâmetro e publicar a nova versão.",
+                "Passo 4: Repetir a auditoria na plataforma para zerar a não-conformidade."
+            ]
+            steps_html = "<br/>".join([f"• <b>Step {idx+1}:</b> {step}" for idx, step in enumerate(fc_rec)])
+
+            rem_table_data.append([
+                Paragraph(f"<b>{fc_id}</b><br/><font color='{C_MUTED.hexval()}'>{fc_name}</font>", mono_style),
+                Paragraph(steps_html, body_style),
+            ])
+
+        rem_table = Table(rem_table_data, colWidths=[45 * mm, 137 * mm])
+        rem_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), HexColor("#1e293b")),
+            ('TEXTCOLOR', (0, 0), (-1, 0), C_CYAN),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 7.5),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+            ('TOPPADDING', (0, 0), (-1, -1), 4),
+            ('GRID', (0, 0), (-1, -1), 0.5, C_BORDER),
+        ]))
+        story.append(rem_table)
+        story.append(Spacer(1, 6 * mm))
 
     # ─── 5. Immutable Audit Log & Evidence Hashes ──────────────────────────────
     story.append(Paragraph("<b>3. Trilha de Auditoria Criptográfica & Integridade (SHA-256)</b>", h2_style))

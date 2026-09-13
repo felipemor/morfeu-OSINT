@@ -185,7 +185,7 @@ def generate_security_controls_pdf_bytes(target_url: str = "https://app.shieldse
 
     story = []
 
-    # 1. Big-4 Cover Header
+    # 1. Executive Cover Header
     story.append(Spacer(1, 10))
     story.append(Paragraph("🛡️ LAUDO EXECUTIVO DE AUDITORIA DE 32 CONTROLES DE SEGURANÇA", title_style))
     story.append(Spacer(1, 4))

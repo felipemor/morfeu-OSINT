@@ -1,7 +1,7 @@
 """
-PDF Report Generator — Big-4 Standard Pentest & Cybersecurity Audit Report
-Fully compliant with Banco Central do Brasil (Bacen Resolução CMN nº 4.893 / BCB nº 85),
-LGPD (Lei nº 13.709/18), OWASP WSTG v4.2, PTES, NIST SP 800-115, and CVSS v3.1 standards.
+PDF Report Generator — Enterprise Standard Pentest & Cybersecurity Audit Report
+BACEN CMN 4.893 / BCB 85, NIST SP 800-115, OWASP Top 10 Compliant
+Uses ReportLab to build executive & technical dark-theme audit PDFs.
 """
 import io
 import os
@@ -178,7 +178,7 @@ class PentestReportPDF:
         sev_counts = {s: sum(1 for f in sorted_findings if str(f.get("severity", "")).upper() == s) for s in SEVERITY_ORDER}
         risk_score = self._calc_risk(sev_counts)
 
-        # 1. Big-4 Cover Page
+        # 1. Executive Cover Page
         self._cover_page(target_url, operator, scan_mode, len(sorted_findings), risk_score, project_name)
         self.story.append(PageBreak())
 
@@ -198,7 +198,7 @@ class PentestReportPDF:
         self._findings_summary_table(sorted_findings)
         self.story.append(PageBreak())
 
-        # 6. Detailed Technical Dossier (Big-4 Style: Issue, Impact, Root Cause, Audit Trail, Fix, SLA)
+        # 6. Detailed Technical Dossier (Enterprise Standard: Issue, Impact, Root Cause, Audit Trail, Fix, SLA)
         self._detailed_findings(sorted_findings)
 
         # 7. Strategic 3-Phase Action Plan & Remediation Roadmap
@@ -214,7 +214,7 @@ class PentestReportPDF:
         )
         return self.output_path
 
-    # ─── 1. Big-4 Cover Page ──────────────────────────────────────────────────
+    # ─── 1. Executive Cover Page ──────────────────────────────────────────────
 
     def _cover_page(self, url, operator, scan_mode, total, risk, project_name):
         s = self.s
@@ -496,11 +496,11 @@ class PentestReportPDF:
         ])
         self.story.append(t)
 
-    # ─── 6. Detailed Technical Dossier (Big-4 Standard) ───────────────────────
+    # ─── 6. Detailed Technical Dossier (Enterprise Standard) ──────────────────
 
     def _detailed_findings(self, findings):
         s = self.s
-        self.story.append(Paragraph("5. Dossiê Técnico Detalhado dos Achados (Big-4)", s["h1"]))
+        self.story.append(Paragraph("5. Dossiê Técnico Detalhado dos Achados de Segurança", s["h1"]))
         self.story.append(HRFlowable(width="100%", thickness=1.5, color=C_CYAN, spaceAfter=10))
 
         for i, f in enumerate(findings, 1):

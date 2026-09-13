@@ -18,9 +18,19 @@ export default function OSINTPage() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [subdomainFilter, setSubdomainFilter] = useState('');
 
-  // Initial scan on mount
+  // Initial scan on mount or URL param
   useEffect(() => {
-    handleRunScan('stellantis.com');
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryTarget = urlParams.get('target') || urlParams.get('domain');
+      if (queryTarget) {
+        const clean = queryTarget.replace(/^https?:\/\//, '').split('/')[0];
+        setTargetInput(clean);
+        handleRunScan(clean);
+        return;
+      }
+    }
+    handleRunScan('bancostellantis.com.br');
   }, []);
 
   const handleRunScan = async (domainToScan?: string) => {
@@ -55,11 +65,11 @@ export default function OSINTPage() {
   };
 
   const presets = [
-    'stellantis.com',
+    'bancostellantis.com.br',
     'jeep.com.br',
     'fiat.com.br',
-    'shieldsecurity.io',
-    'github.com',
+    'peugeot.com.br',
+    'citroen.com.br',
   ];
 
   return (

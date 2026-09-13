@@ -1,5 +1,5 @@
 """
-Unified Master Audit & Remediation PDF Report Generator (Big-4 & BigTech Standard)
+Unified Master Audit & Remediation PDF Report Generator (Enterprise Audit Standard)
 morfeusec OSINT Platform
 Combines:
 1. Web Vulnerability & Pentest Scanner (OWASP Top 10)
@@ -135,7 +135,7 @@ DEFAULT_SAMPLE_FINDINGS = [
 ]
 
 
-class Big4NumberedCanvas(canvas.Canvas):
+class EnterpriseNumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._saved_page_states = []
@@ -185,7 +185,7 @@ class Big4NumberedCanvas(canvas.Canvas):
 
         self.setFont("Helvetica", 7)
         self.setFillColor(TEXT_MUTED)
-        self.drawRightString(w - 36, h - 22, "PADRÃO BIG-4 & BIGTECH • BACEN CMN 4.893 & NIST SP 800-115")
+        self.drawRightString(w - 36, h - 22, "AUDITORIA REGULATÓRIA & CORPORATIVA • BACEN CMN 4.893 & NIST SP 800-115")
 
         # ── Bottom divider ────────────────────────────────────────────────────
         self.setStrokeColor(colors.HexColor("#1a2840"))
@@ -478,7 +478,7 @@ def generate_unified_master_pdf_bytes(target_url: str = "https://app.shieldsecur
     # ─── 6. EVIDENCE ANNEX & AUDITOR SIGN-OFF ──────────────────────────────
     story.append(PageBreak())
     story.append(Paragraph("📑 SEÇÃO 5: ANEXO DE EVIDÊNCIAS TÉCNICAS E CERTIFICAÇÃO REGULATÓRIA", section_style))
-    story.append(Paragraph("Registro de Hashes SHA-256 e Declaração Formal de Auditoria para Enquadramento Bacen / Big-4.", subtitle_style))
+    story.append(Paragraph("Registro de Hashes SHA-256 e Declaração Formal de Auditoria para Enquadramento Regulatório & Governança.", subtitle_style))
     story.append(Spacer(1, 8))
 
     # Sign-off box
@@ -487,12 +487,12 @@ def generate_unified_master_pdf_bytes(target_url: str = "https://app.shieldsecur
         Paragraph("<b>CERTIFICAÇÃO REGULATÓRIA DE AUDITORIA:</b><br/>"
                   "Declaramos que a presente auditoria unificada abrangeu os testes de invasão na aplicação web, "
                   "a validação dos 32 controles de segurança da informação (Resolução CMN nº 4.893/2021 do BACEN e NIST SP 800-115) "
-                  "e a análise de vetores de malware. O ambiente cumpre os rigorosos padrões de cibersegurança exigidos por órgãos reguladores e Big-4.",
+                  "e a análise de vetores de malware. O ambiente cumpre os rigorosos padrões de cibersegurança exigidos por órgãos reguladores e auditorias de governança corporativa.",
                   ParagraphStyle('SignP', fontSize=8, textColor=TEXT_WHITE, leading=11)),
         Spacer(1, 8),
         Paragraph("<b>Auditor Principal:</b> Felipe Costa | <b>E-mail:</b> fsec.costa@gmail.com | <b>Arquitetura:</b> morfeusec OSINT Platform", ParagraphStyle('SignP2', fontSize=8, textColor=PRIMARY_CYAN, leading=11))
     ]))
 
-    doc.build(story, canvasmaker=Big4NumberedCanvas)
+    doc.build(story, canvasmaker=EnterpriseNumberedCanvas)
     buffer.seek(0)
     return buffer.getvalue()

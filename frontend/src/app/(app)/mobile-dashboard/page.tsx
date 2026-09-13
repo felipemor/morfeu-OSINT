@@ -312,7 +312,7 @@ export default function MobileExecutiveDashboardPage() {
             </h1>
           </div>
           <p className="text-xs text-slate-400 mt-1">
-            Painel consolidado para monitoramento de risco contínuo, governança de postura de segurança em apps móveis (.APK &amp; .IPA), controle de esteira CI/CD e auditoria Big-4.
+            Painel consolidado para monitoramento de risco contínuo, governança de postura de segurança em apps móveis (.APK &amp; .IPA), controle de esteira CI/CD e auditoria de conformidade corporativa.
           </p>
         </div>
 

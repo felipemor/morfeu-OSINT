@@ -38,7 +38,7 @@ export const DEFAULT_SECURITY_CONTROLS: SecurityControlItem[] = [
 
 export async function generateSecurityControlsPdfBlob(
   controls: SecurityControlItem[],
-  targetUrl: string = 'https://app.shieldsecurity.io',
+  targetUrl: string = 'https://bancostellantis.com.br',
   lang: 'pt' | 'en' = 'pt'
 ): Promise<Uint8Array> {
   if (!controls || controls.length === 0) {
@@ -403,10 +403,10 @@ export async function generateSecurityControlsPdfBlob(
       page.drawText(`HTTP/1.1 200 OK  HSTS: max-age=31536000  CSP: default-src 'self'  Server: AkamaiGHost`, {
         x: 52, y: evY - 104, size: 6, font: fontMono, color: textMuted
       });
-      page.drawText(`✓ Summary: ${c.check_summary || 'Controle auditado em conformidade total.'}`, {
+      page.drawText(`[OK] Summary: ${(c.check_summary || 'Controle auditado em conformidade total.').replace(/[^\x00-\xFF]/g, ' ')}`, {
         x: 52, y: evY - 120, size: 6.5, font: fontRegular, color: cyan
       });
-      page.drawText(`✓ Cryptographic Validation: SHA-256 Integrity Verified OK`, {
+      page.drawText(`[OK] Cryptographic Validation: SHA-256 Integrity Verified OK`, {
         x: 52, y: evY - 134, size: 6.5, font: fontRegular, color: textWhite
       });
 

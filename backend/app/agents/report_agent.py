@@ -115,6 +115,20 @@ tr:nth-child(even) { background: #f8fafc; }
     <p>{{ finding.recommendation }}</p>
     {% endif %}
 
+    <h4>🛠️ Passo a Passo Completo de Remediação / Resolution Plan</h4>
+    <ol style="background: #f1f5f9; padding: 12px 20px 12px 35px; border-radius: 6px; border-left: 4px solid #10b981; font-size: 8.5pt;">
+    {% if finding.remediation_steps %}
+        {% for step in finding.remediation_steps %}
+        <li style="margin-bottom: 4px;">{{ step }}</li>
+        {% endfor %}
+    {% else %}
+        <li style="margin-bottom: 4px;"><strong>Passo 1:</strong> Isolar o endpoint afetado ({{ finding.affected_url or finding.affected_asset or 'Alvo' }}) para conter potenciais explorações.</li>
+        <li style="margin-bottom: 4px;"><strong>Passo 2:</strong> Aplicar a correção recomendada: {{ finding.recommendation or 'Atualizar as configurações de segurança perimétricas.' }}</li>
+        <li style="margin-bottom: 4px;"><strong>Passo 3:</strong> {{ finding.developer_recommendation or 'Configurar filtros e cabeçalhos de proteção devidos.' }}</li>
+        <li style="margin-bottom: 4px;"><strong>Passo 4:</strong> Solicitar o Retest automatizado da aplicação para validação da transição de status para RESOLVED.</li>
+    {% endif %}
+    </ol>
+
     {% if finding.evidence %}
     <h4>Cryptographic Evidence Chain</h4>
     {% for ev in finding.evidence %}
@@ -215,6 +229,8 @@ async def _generate_report_async(report_id: str, project_id: str):
                     "affected_asset": f.affected_asset,
                     "description": f.description,
                     "recommendation": f.recommendation,
+                    "developer_recommendation": f.developer_recommendation,
+                    "remediation_steps": getattr(f, "remediation_steps", None),
                     "evidence": evidence_by_finding.get(f.id, []),
                 })
 

@@ -1,6 +1,6 @@
 """
 Mobile Pentest PDF Report Generator — morfeusec OSINT
-Generates Big-4 standard, high-impact cybersecurity reports for Mobile Applications (Android .apk & iOS .ipa).
+Generates enterprise audit standard, high-impact cybersecurity reports for Mobile Applications (Android .apk & iOS .ipa).
 Compliant with OWASP MASVS v2.0, OWASP Mobile Top 10, NIST SP 800-115, and CVSS v3.1.
 """
 import io

@@ -3,7 +3,9 @@ from app.api.v1 import (
     auth, projects, scopes, scans, assets, findings, evidence,
     reports, audit, users, approvals, topology, nl_assistant, agents,
     security_controls, osint, mobile_pentest, felipinho, microsegmentation,
-    morfeuxdr, grafana_analytics, powerbi
+    morfeuxdr, grafana_analytics, powerbi,
+    aspm, compliance_enterprise, correlation, integrations, copilot, datamart,
+    schedule
 )
 
 router = APIRouter()
@@ -30,6 +32,17 @@ router.include_router(microsegmentation.router, prefix="/microsegmentation", tag
 router.include_router(morfeuxdr.router, prefix="/morfeuxdr", tags=["MorfeuXDR SIEM & XDR Platform"])
 router.include_router(grafana_analytics.router, prefix="/grafana-analytics", tags=["Grafana Security Operations & Honeypots"])
 router.include_router(powerbi.router, prefix="/powerbi", tags=["PowerBI Analytics & REST APIs"])
+
+# Enterprise Posture & Governance extensions
+router.include_router(aspm.router, prefix="/aspm", tags=["AppSec & ASPM Posture"])
+router.include_router(compliance_enterprise.router, prefix="/compliance", tags=["Regulatory Compliance & Controls"])
+router.include_router(correlation.router, prefix="/correlation", tags=["Multi-Plane Correlation & Risk"])
+router.include_router(integrations.router, prefix="/integrations", tags=["Enterprise Connectors Hub"])
+router.include_router(copilot.router, prefix="/copilot", tags=["AI Security Copilot"])
+router.include_router(datamart.router, prefix="/datamart", tags=["Executive Data Mart & Trends"])
+router.include_router(schedule.router, prefix="/projects", tags=["Pentest Schedule & Gantt"])
+
+
 
 
 
