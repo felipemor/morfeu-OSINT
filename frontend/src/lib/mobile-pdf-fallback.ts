@@ -275,7 +275,7 @@ export function generateClientSideMobilePdfReport(scanResult: MobileScanResult, 
       <th>${isPt ? 'Classificação de Risco' : 'Risk Classification'}</th>
       <td><span class="badge ${scanResult.risk_score > 60 ? 'badge-critical' : scanResult.risk_score > 30 ? 'badge-high' : 'badge-success'}">${scanResult.risk_grade} (Score: ${scanResult.risk_score}/100)</span></td>
       <th>${isPt ? 'Auditor Responsável' : 'Lead Auditor'}</th>
-      <td>Felipe Costa (fsec.costa@gmail.com)</td>
+      <td>Felipe Costa (felipe_c@myyahoo.com)</td>
     </tr>
   </table>
 
@@ -389,7 +389,7 @@ export function generateClientSideMobilePdfReport(scanResult: MobileScanResult, 
 
   <div class="footer">
     <div><strong>morfeusec OSINT</strong> — Enterprise Mobile Penetration Testing & Threat Governance Platform</div>
-    <div>Escrito por Felipe Costa - fsec.costa@gmail.com</div>
+    <div>Escrito por Felipe Costa - felipe_c@myyahoo.com</div>
   </div>
 
   <script>

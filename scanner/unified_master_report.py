@@ -195,7 +195,7 @@ class EnterpriseNumberedCanvas(canvas.Canvas):
         # ── Footer text ───────────────────────────────────────────────────────
         self.setFont("Helvetica", 7)
         self.setFillColor(colors.HexColor("#4a6080"))
-        self.drawString(36, 26, "ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - fsec.costa@gmail.com")
+        self.drawString(36, 26, "ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - felipe_c@myyahoo.com")
         self.drawRightString(w - 36, 26, f"Página {self._pageNumber} de {page_count}")
         self.restoreState()
 
@@ -302,7 +302,7 @@ def generate_unified_master_pdf_bytes(target_url: str = "https://app.shieldsecur
     audit_hash = hashlib.sha256(f"{target_url}-{datetime.now().isoformat()}".encode()).hexdigest()
     scope_data = [
         [Paragraph("<b>Escopo Avaliado:</b>", small_muted), Paragraph(f"<b>{target_url}</b>", body_style)],
-        [Paragraph("<b>Auditor Responsável:</b>", small_muted), Paragraph("Felipe Costa (fsec.costa@gmail.com) — Lead Cybersecurity Architect", body_style)],
+        [Paragraph("<b>Auditor Responsável:</b>", small_muted), Paragraph("Felipe Costa (felipe_c@myyahoo.com) — Lead Cybersecurity Architect", body_style)],
         [Paragraph("<b>Regulamentação & Normas:</b>", small_muted), Paragraph("Bacen Resolução CMN nº 4.893/2021, Resolução BCB nº 85, NIST SP 800-115, CIS Controls v8, OWASP MASVS v2.0", body_style)],
         [Paragraph("<b>Perspectiva do Documento:</b>", small_muted), Paragraph("<b>Visão Auditor (Conformidade Regulatória) & Visão Analista (Remediação Técnica)</b>", body_style)],
         [Paragraph("<b>Assinatura SHA-256:</b>", small_muted), Paragraph(audit_hash, ParagraphStyle('HshP', fontName='Courier', fontSize=6.5, textColor=ACCENT_BLUE))],
@@ -490,7 +490,7 @@ def generate_unified_master_pdf_bytes(target_url: str = "https://app.shieldsecur
                   "e a análise de vetores de malware. O ambiente cumpre os rigorosos padrões de cibersegurança exigidos por órgãos reguladores e auditorias de governança corporativa.",
                   ParagraphStyle('SignP', fontSize=8, textColor=TEXT_WHITE, leading=11)),
         Spacer(1, 8),
-        Paragraph("<b>Auditor Principal:</b> Felipe Costa | <b>E-mail:</b> fsec.costa@gmail.com | <b>Arquitetura:</b> morfeusec OSINT Platform", ParagraphStyle('SignP2', fontSize=8, textColor=PRIMARY_CYAN, leading=11))
+        Paragraph("<b>Auditor Principal:</b> Felipe Costa | <b>E-mail:</b> felipe_c@myyahoo.com | <b>Arquitetura:</b> morfeusec OSINT Platform", ParagraphStyle('SignP2', fontSize=8, textColor=PRIMARY_CYAN, leading=11))
     ]))
 
     doc.build(story, canvasmaker=EnterpriseNumberedCanvas)

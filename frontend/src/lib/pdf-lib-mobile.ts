@@ -81,7 +81,7 @@ export async function generateMobilePentestPdfBlob(
   page1.drawText(`Target SDK: ${scanResult.target_sdk} | Min SDK: ${scanResult.min_sdk}`, { x: 48, y: y - 50, size: 8, font: fontRegular, color: textMuted });
   page1.drawText(`Classificação: Grau ${scanResult.risk_grade} (Score: ${scanResult.risk_score}/100)`, { x: 48, y: y - 65, size: 8, font: fontBold, color: scanResult.risk_score > 60 ? danger : cyan });
 
-  page1.drawText('Auditor: Felipe Costa (fsec.costa@gmail.com)', { x: width - 250, y: y - 20, size: 8, font: fontBold, color: textWhite });
+  page1.drawText('Auditor: Felipe Costa (felipe_c@myyahoo.com)', { x: width - 250, y: y - 20, size: 8, font: fontBold, color: textWhite });
   page1.drawText('Metodologia: SAST/DAST & Reverse Eng.', { x: width - 250, y: y - 35, size: 8, font: fontRegular, color: textMuted });
   page1.drawText('Padrão: OWASP MASVS L1/L2', { x: width - 250, y: y - 50, size: 8, font: fontRegular, color: cyan });
 
@@ -179,7 +179,7 @@ export async function generateMobilePentestPdfBlob(
 
   // Footer on Page 1
   page1.drawLine({ start: { x: 36, y: 36 }, end: { x: width - 36, y: 36 }, thickness: 0.8, color: borderCol });
-  page1.drawText('ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - fsec.costa@gmail.com', { x: 36, y: 26, size: 7, font: fontRegular, color: textMuted });
+  page1.drawText('ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - felipe_c@myyahoo.com', { x: 36, y: 26, size: 7, font: fontRegular, color: textMuted });
   page1.drawText('Página 1 de 1', { x: width - 90, y: 26, size: 7, font: fontRegular, color: textMuted });
 
   return await pdfDoc.save();

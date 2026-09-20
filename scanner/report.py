@@ -253,7 +253,7 @@ class PentestReportPDF:
                 ],
                 [
                     Paragraph("<b>Auditor / Autor:</b>", s["label"]),
-                    Paragraph("Felipe Costa - fsec.costa@gmail.com", s["body"])
+                    Paragraph("Felipe Costa - felipe_c@myyahoo.com", s["body"])
                 ],
                 [
                     Paragraph("<b>Normas & Referências:</b>", s["label"]),
@@ -675,7 +675,7 @@ class PentestReportPDF:
         ])
         self.story.append(t_sig)
         self.story.append(Spacer(1, 6))
-        self.story.append(Paragraph("morfeusec OSINT — Escrito por Felipe Costa - fsec.costa@gmail.com", s["footer"]))
+        self.story.append(Paragraph("morfeusec OSINT — Escrito por Felipe Costa - felipe_c@myyahoo.com", s["footer"]))
 
     # ─── Helpers ──────────────────────────────────────────────────────────────
 
@@ -718,7 +718,7 @@ class PentestReportPDF:
         canvas.setFont("Helvetica", 7)
         canvas.drawCentredString(
             w / 2, 0.9*cm,
-            f"morfeusec OSINT — Escrito por Felipe Costa - fsec.costa@gmail.com — Página {doc.page}"
+            f"morfeusec OSINT — Escrito por Felipe Costa - felipe_c@myyahoo.com — Página {doc.page}"
         )
         canvas.restoreState()
 
@@ -728,7 +728,7 @@ def generate_pdf(
     target_url: str,
     findings: list[dict],
     crawl_stats: dict,
-    operator: str = "Felipe Costa - fsec.costa@gmail.com",
+    operator: str = "Felipe Costa - felipe_c@myyahoo.com",
     project_name: str = "morfeusec OSINT - Auditoria de Segurança",
     language: str = "pt",
 ) -> str:

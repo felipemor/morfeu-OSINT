@@ -12,13 +12,13 @@ import toast from 'react-hot-toast';
 
 interface Message {
   id: string;
-  sender: 'user' | 'felipinho';
+  sender: 'user' | 'raven';
   text: string;
   timestamp: string;
   suggestedActions?: string[];
 }
 
-export default function FelipinhoFloatingWidget() {
+export default function RavenFloatingWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
@@ -27,22 +27,22 @@ export default function FelipinhoFloatingWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome-1',
-      sender: 'felipinho',
-      text: `### 🤖 Olá Jovem! Sou o Felipinho, se você é padawan ou tem dúvidas especificas, posso te dar uma ajuda no entendimento.
+      sender: 'raven',
+      text: `### 🛡️ Olá! Sou a **Raven**, a Inteligência Tática e Especialista em Cibersegurança da **Heimdall Security**.
 
-Posso te ajudar a interpretar:
-* 📱 **Mobile Pentest:** Vulnerabilidades em APKs/IPAs, descompilação e pontuação **OWASP MASVS**.
-* 🌐 **OSINT & Recon:** Como analisar registros DNS DoH, logs **crt.sh**, **WAF Akamai** e buckets em nuvem.
-* ✉️ **Segurança de E-mail:** Entender políticas **DMARC** (\`p=reject\`), **SPF** e riscos de spoofing.
-* 🛡️ **32 Controles de Segurança:** Entender os testes perimétricos e laudos regulatórios.
+Estou pronta para analisar sua postura e apoiar investigações em:
+* 📱 **Mobile AppSec:** Análise de APK/IPA, descompilação e conformidade **OWASP MASVS**.
+* 🌐 **OSINT & Superfície de Ataque:** Mapeamento de DNS, subdomínios, certificados e infraestrutura exposta.
+* 🛡️ **Defesa & Governança:** Avaliação dos controles de segurança e laudos executivos BACEN/PCI.
+* 🔍 **Inteligência Anti-Fraude:** Investigação de domínios clonados, boletos adulterados e takedowns.
 
-*Clique em uma pergunta rápida abaixo ou digite sua dúvida:*`,
+*Selecione um tópico rápido ou digite sua consulta técnica:*`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       suggestedActions: [
-        'Como interpretar o score MASVS do APK?',
-        'O que significa DMARC p=reject?',
-        'Como funciona a detecção do WAF Akamai?',
-        'Como baixar relatórios em PDF e Excel?',
+        'Como interpretar o score MASVS do Mobile?',
+        'O que fazer ao detectar um clone de CNPJ ou domínio fake?',
+        'Como funciona a verificação dos 32 Controles BACEN?',
+        'Como exportar laudos periciais com custódia SHA-256?',
       ],
     },
   ]);
@@ -77,8 +77,8 @@ Posso te ajudar a interpretar:
     try {
       const data = await felipinhoApi.chat(text);
       const aiMsg: Message = {
-        id: `feli-${Date.now()}`,
-        sender: 'felipinho',
+        id: `raven-${Date.now()}`,
+        sender: 'raven',
         text: data.response,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         suggestedActions: data.suggested_actions,
@@ -87,8 +87,8 @@ Posso te ajudar a interpretar:
     } catch (err) {
       const errorMsg: Message = {
         id: `err-${Date.now()}`,
-        sender: 'felipinho',
-        text: 'Desculpe, ocorreu uma oscilação na conexão com o motor de inteligência. Por favor, tente novamente.',
+        sender: 'raven',
+        text: 'Desculpe, ocorreu uma oscilação na conexão com o motor de inteligência Raven. Por favor, tente novamente.',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -108,13 +108,13 @@ Posso te ajudar a interpretar:
     setMessages([
       {
         id: `welcome-${Date.now()}`,
-        sender: 'felipinho',
-        text: 'Conversa limpa! Em que mais posso te ajudar?',
+        sender: 'raven',
+        text: 'Conversa reiniciada. Qual investigação ou análise tática deseja executar?',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         suggestedActions: [
-          'Como interpretar o score MASVS do APK?',
-          'O que significa DMARC p=reject?',
-          'Como funciona a detecção do WAF Akamai?',
+          'Como interpretar o score MASVS do Mobile?',
+          'O que fazer ao detectar um clone de CNPJ ou domínio fake?',
+          'Como funciona a verificação dos 32 Controles BACEN?',
         ],
       },
     ]);
@@ -132,23 +132,23 @@ Posso te ajudar a interpretar:
           className="relative group flex items-center gap-3 px-4 py-3 rounded-full bg-gradient-to-r from-slate-900 via-slate-900 to-[#0c182b] border border-accent-cyan/40 text-slate-100 shadow-[0_0_25px_rgba(0,212,255,0.3)] hover:shadow-[0_0_35px_rgba(0,212,255,0.5)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
         >
           {/* Animated Glowing Cyber Ring */}
-          <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-accent-cyan to-emerald-400 opacity-30 group-hover:opacity-75 blur-sm transition-opacity" />
+          <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-accent-cyan to-purple-500 opacity-30 group-hover:opacity-75 blur-sm transition-opacity" />
 
           {/* Avatar Icon */}
-          <div className="relative w-9 h-9 rounded-full bg-slate-950 border-2 border-accent-cyan/60 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner">
-            <img src="/felipinho-avatar.png" alt="felipinho AI" className="w-full h-full object-cover" />
+          <div className="relative w-9 h-9 rounded-full bg-slate-950 border-2 border-accent-cyan/60 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner text-cyan-400">
+            <Bot className="w-5 h-5" />
             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-slate-900 animate-ping" />
             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-slate-900" />
           </div>
 
           <div className="relative text-left hidden sm:block">
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-bold text-slate-100 font-mono tracking-tight">felipinho AI</span>
+              <span className="text-xs font-bold text-slate-100 font-mono tracking-tight">Raven AI</span>
               <span className="px-1.5 py-0.2 rounded bg-accent-cyan/20 text-accent-cyan text-[9px] font-extrabold uppercase font-mono">
                 ONLINE
               </span>
             </div>
-            <p className="text-[10px] text-slate-400">Tire dúvidas sobre a plataforma</p>
+            <p className="text-[10px] text-slate-400">Inteligência Tática &amp; Suporte</p>
           </div>
         </button>
       )}
@@ -166,18 +166,18 @@ Posso te ajudar a interpretar:
           {/* Modal Header */}
           <div className="px-4 py-3 bg-gradient-to-r from-slate-900 via-[#0c182b] to-slate-900 border-b border-bg-border flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2.5">
-              <div className="relative w-9 h-9 rounded-full bg-slate-950 border border-accent-cyan/60 flex items-center justify-center overflow-hidden flex-shrink-0">
-                <img src="/felipinho-avatar.png" alt="felipinho AI" className="w-full h-full object-cover" />
+              <div className="relative w-9 h-9 rounded-full bg-slate-950 border border-accent-cyan/60 flex items-center justify-center overflow-hidden flex-shrink-0 text-cyan-400">
+                <Bot className="w-5 h-5" />
                 <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-400 border border-slate-900" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="text-xs font-bold text-slate-100 tracking-tight font-mono">felipinho AI</h3>
-                  <span className="px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-400 text-[9px] font-bold font-mono">
-                    PRO
+                  <h3 className="text-xs font-bold text-slate-100 tracking-tight font-mono">Raven AI</h3>
+                  <span className="px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[9px] font-bold font-mono">
+                    HEIMDALL
                   </span>
                 </div>
-                <p className="text-[10px] text-slate-400">Assistente de Interpretação &amp; Pentest</p>
+                <p className="text-[10px] text-slate-400">Assistente Tático &amp; Cibersegurança</p>
               </div>
             </div>
 
@@ -228,8 +228,8 @@ Posso te ajudar a interpretar:
                         {!isUser && (
                           <div className="flex items-center justify-between border-b border-bg-border/60 pb-1.5 mb-2 text-[10px] text-slate-400">
                             <span className="flex items-center gap-1.5 font-mono text-accent-cyan font-bold">
-                              <img src="/felipinho-avatar.png" alt="Avatar" className="w-4 h-4 rounded-full object-cover border border-accent-cyan/50" />
-                              felipinho AI
+                              <Bot className="w-3.5 h-3.5" />
+                              Raven AI
                             </span>
                             <button
                               onClick={() => handleCopy(msg.text, msg.id)}
@@ -309,8 +309,8 @@ Posso te ajudar a interpretar:
                   </button>
                 </form>
                 <div className="flex items-center justify-between text-[9px] text-slate-500 mt-1.5 px-1">
-                  <span>felipinho AI • Assistente Oficial</span>
-                  <span>Escrito por Felipe Costa - fsec.costa@gmail.com</span>
+                  <span>Raven AI • Assistente Oficial</span>
+                  <span>Escrito por Felipe Costa - felipe_c@myyahoo.com</span>
                 </div>
               </div>
             </>

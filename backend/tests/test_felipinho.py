@@ -28,6 +28,6 @@ def test_felipinho_ai_author_query():
     async def run():
         res = await felipinho_service.answer_query("Quem é o autor do morfeusec OSINT?")
         assert "Felipe Costa" in res["response"]
-        assert "fsec.costa@gmail.com" in res["response"]
+        assert "felipe_c@myyahoo.com" in res["response"]
 
     asyncio.run(run())

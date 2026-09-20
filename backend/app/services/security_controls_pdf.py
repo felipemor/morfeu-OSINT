@@ -120,7 +120,7 @@ def build_security_controls_pdf(
     exec_summary_text = f"""
     <b>Alvo Auditado:</b> <font color="{C_CYAN.hexval()}">{target_url}</font><br/>
     <b>Escopo de Teste:</b> Controles de Segurança em URLs Externas e Aplicações Web<br/>
-    <b>Autor / Auditor Responsável:</b> Felipe Costa - fsec.costa@gmail.com<br/>
+    <b>Autor / Auditor Responsável:</b> Felipe Costa - felipe_c@myyahoo.com<br/>
     <b>Efetividade de Segurança:</b> <b>{posture_score}%</b> ({passed_count} de {total_count} Controles Conformes)
     """
 
@@ -271,7 +271,7 @@ def build_security_controls_pdf(
     # ─── 6. Compliance Certification Footer ─────────────────────────────────────
     cert_text = """
     <b>DECLARAÇÃO DE CONFORMIDADE:</b> Este documento atesta a execução de simulações e auditoria técnica não-destrutiva de controles de segurança na aplicação alvo, em estrita conformidade com os frameworks NIST CSF, CIS Controls v8 e OWASP WSTG v4.2.<br/>
-    <b>Aplicação e auditoria desenvolvidas por Felipe Costa - fsec.costa@gmail.com</b>
+    <b>Aplicação e auditoria desenvolvidas por Felipe Costa - felipe_c@myyahoo.com</b>
     """
     cert_table = Table([[Paragraph(cert_text, mono_style)]], colWidths=[182 * mm])
     cert_table.setStyle(TableStyle([

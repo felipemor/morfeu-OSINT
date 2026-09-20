@@ -27,7 +27,7 @@ async def get_current_user(
         # Return fallback transient user
         dummy_user = User(
             id="user-001",
-            email="fsec.costa@gmail.com",
+            email="felipe_c@myyahoo.com",
             full_name="Felipe Costa",
             role=UserRole.ADMIN,
             is_active=True
@@ -51,7 +51,7 @@ async def get_current_user(
 
     return User(
         id="user-001",
-        email="fsec.costa@gmail.com",
+        email="felipe_c@myyahoo.com",
         full_name="Felipe Costa",
         role=UserRole.ADMIN,
         is_active=True

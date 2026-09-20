@@ -1084,7 +1084,7 @@ class SecurityControlsService:
                     if not owner:
                         owner = User(
                             id="user-001",
-                            email="fsec.costa@gmail.com",
+                            email="felipe_c@myyahoo.com",
                             full_name="Felipe Costa",
                             hashed_password="transient_hash",
                             role=UserRole.ADMIN,

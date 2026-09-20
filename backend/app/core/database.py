@@ -30,12 +30,17 @@ engine = None
 AsyncSessionLocal = None
 
 try:
+    connect_args = {}
+    if settings.is_ssl_required:
+        connect_args["ssl"] = True
+
     engine = create_async_engine(
-        settings.DATABASE_URL,
+        settings.async_database_url,
         echo=settings.ENVIRONMENT == "development",
         pool_size=10,
         max_overflow=20,
         pool_pre_ping=True,
+        connect_args=connect_args,
     )
     AsyncSessionLocal = async_sessionmaker(
         engine,

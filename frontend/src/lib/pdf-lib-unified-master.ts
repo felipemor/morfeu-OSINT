@@ -498,7 +498,7 @@ export async function generateUnifiedMasterPdfBlob(options: UnifiedMasterPdfOpti
   p4.drawText(cleanText('de seguranca mobile MASVS e a validacao dos 32 controles de seguranca cibernetica (Bacen CMN 4.893 e NIST).'), {
     x: 50, y: signY + 60, size: 6.8, font: fontRegular, color: textMuted,
   });
-  p4.drawText(cleanText('Auditor Lider: Felipe Costa - Principal Cybersecurity Architect | Contato: fsec.costa@gmail.com'), {
+  p4.drawText(cleanText('Auditor Lider: Felipe Costa - Principal Cybersecurity Architect | Contato: felipe_c@myyahoo.com'), {
     x: 50, y: signY + 42, size: 6.8, font: fontBold, color: cyan,
   });
   p4.drawText(cleanText('Plataforma: morfeusec OSINT | Assinatura SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069'), {

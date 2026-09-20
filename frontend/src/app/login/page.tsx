@@ -20,8 +20,8 @@ export default function LoginPage() {
   const [authMode, setAuthMode] = useState<'CREDENTIALS_2FA' | 'QR_MOBILE'>('CREDENTIALS_2FA');
 
   // Credentials State
-  const [email, setEmail] = useState('operator@sfssa.security');
-  const [password, setPassword] = useState('Stellantis@2026!Sec');
+  const [email, setEmail] = useState('operator@heimdall.security');
+  const [password, setPassword] = useState('Heimdall@2026!Sec');
   const [showPassword, setShowPassword] = useState(false);
   const [totpCode, setTotpCode] = useState(['', '', '', '', '', '']);
   const totpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -44,7 +44,7 @@ export default function LoginPage() {
     const randomHex = Array.from({ length: 16 }, () =>
       Math.floor(Math.random() * 16).toString(16)
     ).join('');
-    const newSession = `sfssa-qr-${Date.now().toString(36)}-${randomHex}`;
+    const newSession = `heimdall-qr-${Date.now().toString(36)}-${randomHex}`;
     const mockOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
     setSessionId(newSession);
@@ -53,14 +53,11 @@ export default function LoginPage() {
     setQrTotpPin('');
     setCurrentValidOtp(mockOtp);
 
-    // Standard RFC-compliant scannable QR payload:
-    // 1. URL: Standard URL easily readable by all smartphone camera apps (iOS Camera, Google Lens, Samsung Camera)
-    // 2. TOTP: otpauth:// format for Google Authenticator, Microsoft Authenticator, Authy, Apple Passwords
     let payload = '';
     if (activeFormat === 'URL') {
-      payload = `https://morfeusec.local/auth/verify?session=${newSession}&pin=${mockOtp}&user=operator@sfssa.security`;
+      payload = `https://heimdall.security/auth/verify?session=${newSession}&pin=${mockOtp}&user=operator@heimdall.security`;
     } else {
-      payload = `otpauth://totp/morfeusec%20OSINT:operator%40sfssa.security?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=morfeusec%20OSINT&algorithm=SHA1&digits=6&period=30`;
+      payload = `otpauth://totp/Heimdall%20Security:operator%40heimdall.security?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=Heimdall%20Security&algorithm=SHA1&digits=6&period=30`;
     }
 
     setQrRawPayload(payload);
@@ -603,7 +600,7 @@ export default function LoginPage() {
 
         {/* Footer info */}
         <p className="text-center text-[10px] text-slate-500 mt-4">
-          morfeusec OSINT &bull; Autenticação de Operadores de Segurança e Engenharia de Ameaças
+          Heimdall Security &bull; Plataforma Corporativa de Inteligência Defensiva e Operações Ofensivas
         </p>
       </div>
     </div>

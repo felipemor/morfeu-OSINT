@@ -250,7 +250,7 @@ export function generateClientSideSecurityControlsPdf(
       <th>Aderência Geral</th>
       <td><span class="badge ${adherence >= 80 ? 'badge-success' : 'badge-high'}">${adherence}% Conforme</span></td>
       <th>Auditor Responsável</th>
-      <td>Felipe Costa (fsec.costa@gmail.com)</td>
+      <td>Felipe Costa (felipe_c@myyahoo.com)</td>
     </tr>
   </table>
 
@@ -312,7 +312,7 @@ export function generateClientSideSecurityControlsPdf(
 
   <div class="footer">
     <div><strong>morfeusec OSINT</strong> — Enterprise Offensive Intelligence &amp; Controls Compliance</div>
-    <div>Escrito por Felipe Costa - fsec.costa@gmail.com</div>
+    <div>Escrito por Felipe Costa - felipe_c@myyahoo.com</div>
   </div>
 
   <script>

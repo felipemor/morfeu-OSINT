@@ -89,7 +89,7 @@ class MobilePentestReportPDF:
     def build(
         self,
         scan_result: Dict[str, Any],
-        operator: str = "Felipe Costa - fsec.costa@gmail.com",
+        operator: str = "Felipe Costa - felipe_c@myyahoo.com",
         language: str = "pt",
     ) -> str:
         self.language = language
@@ -202,7 +202,7 @@ class MobilePentestReportPDF:
                 ],
                 [
                     Paragraph("<b>Auditor / Autor:</b>", s["label"]),
-                    Paragraph("Felipe Costa - fsec.costa@gmail.com", s["body"])
+                    Paragraph("Felipe Costa - felipe_c@myyahoo.com", s["body"])
                 ],
                 [
                     Paragraph("<b>Padrão de Referência:</b>", s["label"]),
@@ -570,7 +570,7 @@ class MobilePentestReportPDF:
         sig_data = [
             [
                 Paragraph("<b>Auditor Responsável / Lead Auditor:</b><br/>Felipe Costa<br/><font size=7 color='#94a3b8'>Cybersecurity Architect & Offensive Security Specialist</font>", s["body"]),
-                Paragraph("<b>Canal de Contato Institucional:</b><br/>fsec.costa@gmail.com<br/><font size=7 color='#94a3b8'>morfeusec OSINT Platform Lead</font>", s["body"]),
+                Paragraph("<b>Canal de Contato Institucional:</b><br/>felipe_c@myyahoo.com<br/><font size=7 color='#94a3b8'>morfeusec OSINT Platform Lead</font>", s["body"]),
             ]
         ]
         t_sig = Table(sig_data, colWidths=[8.5*cm, 8.5*cm], style=[
@@ -581,7 +581,7 @@ class MobilePentestReportPDF:
         ])
         self.story.append(t_sig)
         self.story.append(Spacer(1, 6))
-        self.story.append(Paragraph("morfeusec OSINT — Escrito por Felipe Costa - fsec.costa@gmail.com", s["footer"]))
+        self.story.append(Paragraph("morfeusec OSINT — Escrito por Felipe Costa - felipe_c@myyahoo.com", s["footer"]))
 
     # ─── Background Template ──────────────────────────────────────────────────
 
@@ -590,14 +590,14 @@ class MobilePentestReportPDF:
         canvas.saveState()
         canvas.setFillColor(C_MUTED)
         canvas.setFont("Helvetica", 7)
-        canvas.drawCentredString(A4[0]/2, 1.1*cm, f"morfeusec OSINT — Escrito por Felipe Costa - fsec.costa@gmail.com — Página {doc.page}")
+        canvas.drawCentredString(A4[0]/2, 1.1*cm, f"morfeusec OSINT — Escrito por Felipe Costa - felipe_c@myyahoo.com — Página {doc.page}")
         canvas.restoreState()
 
 
 def generate_mobile_pdf(
     output_path: str,
     scan_result: Dict[str, Any],
-    operator: str = "Felipe Costa - fsec.costa@gmail.com",
+    operator: str = "Felipe Costa - felipe_c@myyahoo.com",
     language: str = "pt",
 ) -> str:
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -611,7 +611,7 @@ def generate_mobile_pdf(
 
 def generate_mobile_pdf_bytes(
     scan_result: Dict[str, Any],
-    operator: str = "Felipe Costa - fsec.costa@gmail.com",
+    operator: str = "Felipe Costa - felipe_c@myyahoo.com",
     language: str = "pt",
 ) -> bytes:
     buffer = io.BytesIO()
@@ -688,7 +688,7 @@ def generate_mobile_xlsx(scan_result: Dict[str, Any]) -> bytes:
         ("Target SDK / Platform Version", scan_result.get("target_sdk")),
         ("Overall Risk Score (0-100)", f"{scan_result.get('risk_score')} / 100"),
         ("OWASP MASVS Security Grade", scan_result.get("risk_grade")),
-        ("Author / Auditor", "Escrito por Felipe Costa - fsec.costa@gmail.com"),
+        ("Author / Auditor", "Escrito por Felipe Costa - felipe_c@myyahoo.com"),
         ("Total Vulnerabilities Identified", scan_result.get("findings_summary", {}).get("total", len(scan_result.get("findings", [])))),
         ("Critical Severity Findings", scan_result.get("findings_summary", {}).get("critical", 0)),
         ("High Severity Findings", scan_result.get("findings_summary", {}).get("high", 0)),

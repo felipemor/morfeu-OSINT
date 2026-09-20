@@ -15,13 +15,30 @@ async function fetchData<T>(file: string): Promise<T> {
 }
 
 // ─── Types ───────────────────────────────────────────────────────────────────
+export type ProjectType = 'FINANCIAL_FRAUD' | 'FISCAL_FORENSIC' | 'WEB_PENTEST' | 'MOBILE_PENTEST' | 'EXTERNAL_ATTACK_SURFACE';
+
 export interface Project {
-  id: string; name: string; client: string; business_unit: string;
-  description: string; owner_id: string; status: string;
-  start_date: string | null; end_date: string | null;
-  created_at: string; updated_at: string;
-  findings_count: number; assets_count: number;
-  critical_count: number; high_count: number; risk_score: number;
+  id: string;
+  name: string;
+  client: string;
+  business_unit: string;
+  project_type?: ProjectType | string;
+  description: string;
+  owner_id: string;
+  status: string;
+  start_date: string | null;
+  end_date: string | null;
+  created_at: string;
+  updated_at: string;
+  findings_count: number;
+  assets_count: number;
+  critical_count: number;
+  high_count: number;
+  risk_score: number;
+  // Specific financial fraud / forensic fields
+  fraud_exposure?: number;
+  records_count?: number;
+  dataset_name?: string;
 }
 
 export interface Finding {
@@ -283,9 +300,10 @@ export const projectsApi = {
     const projId = data.id || `proj-${Date.now()}`;
     const newProject: Project = {
       id: projId,
-      name: data.name || 'Projeto de Pentest',
-      client: data.client || 'Alvo de Varredura',
-      business_unit: data.business_unit || 'Infraestrutura & Aplicações',
+      name: data.name || 'Projeto de Auditoria & Fraude Financeira',
+      client: data.client || 'Empresa Auditada Matriz S.A.',
+      business_unit: data.business_unit || 'Controladoria & Compliance Fiscal',
+      project_type: data.project_type || 'FINANCIAL_FRAUD',
       description: data.description || '',
       owner_id: currentUser?.id || 'user-pentester',
       status: data.status || 'ACTIVE',
@@ -298,6 +316,9 @@ export const projectsApi = {
       critical_count: data.critical_count || 0,
       high_count: data.high_count || 0,
       risk_score: data.risk_score || 10,
+      fraud_exposure: data.fraud_exposure || 0,
+      records_count: data.records_count || 0,
+      dataset_name: data.dataset_name || '',
     };
     const custom = getLocalItem<Project[]>('pentest_custom_projects', []);
     const filtered = custom.filter(p => p.id !== projId);
@@ -609,7 +630,9 @@ export const dashboardApi = {
       overall_risk: projects.length > 0 ? Math.max(...projects.map(p => p.risk_score), 0) : 0,
       projects,
     };
-  }
+  },
+  getOverview: async () => datamartApi.getExecutiveSummary(),
+  getExecutiveSummary: async () => datamartApi.getExecutiveSummary(),
 };
 
 // ─── Schedule API (Gantt) ─────────────────────────────────────────────────────
@@ -1258,23 +1281,23 @@ export const felipinhoApi = {
     const msg = message.toLowerCase();
     if (msg.includes('masvs') || msg.includes('apk') || msg.includes('mobile') || msg.includes('ios')) {
       return {
-        assistant: 'Felipinho AI',
-        author_attribution: 'Escrito por Felipe Costa - fsec.costa@gmail.com',
+        assistant: 'Raven AI',
+        author_attribution: 'Escrito por Felipe Costa - felipe_c@myyahoo.com',
         title: 'Interpretação do Pentest Mobile (OWASP MASVS v2.0)',
         response: `### 📱 Como Interpretar o Pentest Mobile (OWASP MASVS v2.0)
 
-O **morfeusec OSINT** avalia pacotes .APK e .IPA em 7 pilares essenciais:
+A **Heimdall Security** avalia pacotes .APK e .IPA em 7 pilares essenciais:
 1. **MASVS-STORAGE:** Analisa riscos de vazamento em storage e flag \`allowBackup="true"\` (risco de extração via ADB).
 2. **MASVS-CRYPTO:** Identifica cifras fracas como \`AES/ECB\` (sem IV) e hashes \`MD5\`.
 3. **MASVS-NETWORK:** Audita presença de **SSL Certificate Pinning** e bloqueio de tráfego HTTP claro.
 4. **MASVS-PLATFORM:** Verifica permissões críticas como \`SYSTEM_ALERT_WINDOW\` (vetor de **Tapjacking**).
 5. **MASVS-RESILIENCE:** Avalia detecção de **Root/Jailbreak** e hooks do **Frida**.
 
-💡 *Dica do Felipinho:* Baixe o relatório completo em **PDF (PT/EN)** ou **Excel (.xlsx)** na aba Mobile Pentest!`,
+💡 *Dica da Raven:* Baixe o relatório completo em **PDF (PT/EN/ES)** ou **Excel (.xlsx)** na aba Mobile Pentest!`,
         timestamp: new Date().toISOString(),
         suggested_actions: [
           'O que significa DMARC p=reject?',
-          'Como funciona o WAF Akamai?',
+          'Como funciona a proteção WAF?',
           'Quais são os 32 controles de segurança?',
         ],
       };
@@ -1282,8 +1305,8 @@ O **morfeusec OSINT** avalia pacotes .APK e .IPA em 7 pilares essenciais:
 
     if (msg.includes('dmarc') || msg.includes('spf') || msg.includes('email') || msg.includes('phishing')) {
       return {
-        assistant: 'Felipinho AI',
-        author_attribution: 'Escrito por Felipe Costa - fsec.costa@gmail.com',
+        assistant: 'Raven AI',
+        author_attribution: 'Escrito por Felipe Costa - felipe_c@myyahoo.com',
         title: 'Segurança de E-mail & DMARC Posture',
         response: `### ✉️ Segurança de E-mail & DMARC
 
@@ -1299,12 +1322,12 @@ O **morfeusec OSINT** avalia pacotes .APK e .IPA em 7 pilares essenciais:
     }
 
     return {
-      assistant: 'Felipinho AI',
-      author_attribution: 'Escrito por Felipe Costa - fsec.costa@gmail.com',
-      title: 'Assistente de Segurança Ofensiva',
-      response: `### 🤖 Olá! Sou o Felipinho AI.
+      assistant: 'Raven AI',
+      author_attribution: 'Escrito por Felipe Costa - felipe_c@myyahoo.com',
+      title: 'Assistente de Segurança Ofensiva & Inteligência Defensiva',
+      response: `### 🤖 Olá! Sou a Raven AI.
 
-Estou aqui para tirar dúvidas sobre interpretações de resultados, métricas de risco, padrões de pentest (OWASP MASVS, NIST, BACEN) e uso da plataforma **morfeusec OSINT**!
+Estou aqui para tirar dúvidas sobre interpretações de resultados, métricas de risco, padrões de pentest (OWASP MASVS, NIST, BACEN) e uso da plataforma **Heimdall Security**!
 
 Como posso te ajudar hoje?`,
       timestamp: new Date().toISOString(),
@@ -2365,4 +2388,323 @@ export const datamartApi = {
     };
   }
 };
+
+
+// ─── Pentest Hub API ──────────────────────────────────────────────────────────
+const HUB_URLS = [
+  process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/pentest-hub` : 'http://localhost:8000/api/v1/pentest-hub',
+  'http://localhost:8000/api/v1/pentest-hub',
+  'http://localhost:8001/api/v1/pentest-hub',
+];
+
+async function hubPost(path: string, body: object): Promise<any> {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  let lastErr = null;
+  for (const baseUrl of HUB_URLS) {
+    try {
+      const res = await fetch(`${baseUrl}${path}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(90_000),
+      });
+      if (res.ok) return await res.json();
+      const err = await res.json().catch(() => ({ detail: res.statusText }));
+      lastErr = new Error(err.detail || `HTTP ${res.status}`);
+    } catch (e: any) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error('Falha ao conectar ao Pentest Hub.');
+}
+
+async function hubGet(path: string): Promise<any> {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  let lastErr = null;
+  for (const baseUrl of HUB_URLS) {
+    try {
+      const res = await fetch(`${baseUrl}${path}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (res.ok) return await res.json();
+      lastErr = new Error(`HTTP ${res.status}`);
+    } catch (e: any) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error('Falha ao consultar Pentest Hub.');
+}
+
+export const pentestHubApi = {
+  // Tool status
+  getToolsStatus: () => hubGet('/tools'),
+  listJobs: (limit = 20) => hubGet(`/jobs?limit=${limit}`),
+  getJob: (jobId: string) => hubGet(`/jobs/${jobId}`),
+
+  // 1. Recon & OSINT
+  runTheHarvester: (target: string, sources: string[] = []) =>
+    hubPost('/recon/theharvester', { target, sources }),
+  runReconNg: (target: string, modules: string[] = []) =>
+    hubPost('/recon/reconng', { target, modules }),
+  runShodan: (target: string, shodan_api_key?: string) =>
+    hubPost('/recon/shodan', { target, shodan_api_key }),
+
+  // 2. Vulnerability Scanners
+  runNuclei: (target: string, templates: string[] = []) =>
+    hubPost('/vuln/nuclei', { target, templates }),
+  runNikto: (target: string) =>
+    hubPost('/vuln/nikto', { target }),
+
+  // 3. Exploitation & Red Teaming
+  runMetasploit: (target: string, module = '', options: object = {}) =>
+    hubPost('/exploit/metasploit', { target, module, options }),
+  runBeEF: (target: string, hook_port = 3000) =>
+    hubPost('/exploit/beef', { target, hook_port }),
+  runEmpire: (target: string, listener = 'http', stager = 'windows/launcher_bat') =>
+    hubPost('/exploit/empire', { target, listener, stager }),
+
+  // 4. Wireless
+  runWireless: (interface_: string = 'wlan0', tool = 'aircrack-ng') =>
+    hubPost('/wireless', { interface: interface_, tool }),
+
+  // 5. Social Engineering
+  runGophish: (target_emails: string[], campaign_name?: string, template?: string, api_url?: string) =>
+    hubPost('/social/gophish', { target_emails, campaign_name, template, api_url }),
+  runSET: (attack_type: string, target?: string) =>
+    hubPost('/social/set', { attack_type, target }),
+
+  // 6. Mobile
+  runFrida: (target_app: string, script?: string, platform = 'android') =>
+    hubPost('/mobile/frida', { target_app, script, platform }),
+  runDrozer: (target_package: string, checks: string[] = []) =>
+    hubPost('/mobile/drozer', { target_package, checks }),
+
+  // 7. AI-Assisted
+  runPentestGPT: (
+    target: string,
+    context = '',
+    previous_findings: object[] = [],
+    llm_provider = 'simulated',
+    api_key?: string,
+  ) => hubPost('/ai', { target, context, previous_findings, llm_provider, api_key }),
+};
+
+// ─── EASM & Dark Web API ──────────────────────────────────────────────────────
+const API_V1_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+
+async function genericV1Post(endpoint: string, body: object): Promise<any> {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const urls = [`${API_V1_BASE}${endpoint}`, `http://localhost:8001/api/v1${endpoint}`];
+  let lastErr = null;
+
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(90_000),
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error('Falha ao conectar com o serviço.');
+}
+
+async function genericV1Get(endpoint: string): Promise<any> {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const urls = [`${API_V1_BASE}${endpoint}`, `http://localhost:8001/api/v1${endpoint}`];
+  let lastErr = null;
+
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error('Falha ao conectar com o serviço.');
+}
+
+export const easmApi = {
+  scan: (target: string, scan_type: string = 'FULL', deep_onion: boolean = false) =>
+    genericV1Post('/easm/scan', { target, scan_type, deep_onion }),
+  listScans: (limit: number = 20) =>
+    genericV1Get(`/easm/scans?limit=${limit}`),
+  getScan: (scanId: string) =>
+    genericV1Get(`/easm/scans/${scanId}`),
+  getDarkWebHits: (scanId?: string, limit: number = 50) =>
+    genericV1Get(`/easm/dark-web-hits?${scanId ? `scan_id=${scanId}&` : ''}limit=${limit}`),
+};
+
+export const aegisApi = {
+  scanHost: (host: string, port: number = 443) =>
+    genericV1Post('/aegis/scan', { host, port }),
+  getCbom: (host?: string, port: number = 443) =>
+    genericV1Get(`/aegis/cbom?${host ? `host=${encodeURIComponent(host)}&` : ''}port=${port}`),
+  getExecutiveSummary: () =>
+    genericV1Get('/aegis/executive-summary'),
+  listScans: (limit: number = 50) =>
+    genericV1Get(`/aegis/scans?limit=${limit}`),
+};
+
+export const brandProtectionApi = {
+  monitor: (brand: string, official_domain?: string, check_ct_logs: boolean = true) =>
+    genericV1Post('/brand/monitor', { brand, official_domain, check_ct_logs }),
+  listAlerts: (brand?: string, status_filter?: string, limit: number = 50) =>
+    genericV1Get(`/brand/alerts?${brand ? `brand=${encodeURIComponent(brand)}&` : ''}${status_filter ? `status_filter=${status_filter}&` : ''}limit=${limit}`),
+  submitTakedown: (alert_id: string, channels: string[] = ['SAFEBROWSING', 'REGISTRAR']) =>
+    genericV1Post('/brand/takedown', { alert_id, channels }),
+  updateAlertStatus: (alert_id: string, new_status: string) =>
+    genericV1Post(`/brand/alerts/${alert_id}/status`, { status: new_status }),
+  probeHost: (domain: string) =>
+    genericV1Get(`/fraudintel/takedown/probe-live?domain=${encodeURIComponent(domain)}`),
+};
+
+export const boletoApi = {
+  validate: (linha_digitavel: string, expected_cnpj?: string) =>
+    genericV1Post('/boleto/validate', { linha_digitavel, expected_cnpj }),
+  listChecks: (limit: number = 50, suspicious_only: boolean = false) =>
+    genericV1Get(`/boleto/checks?limit=${limit}&suspicious_only=${suspicious_only}`),
+  getCheck: (checkId: string) =>
+    genericV1Get(`/boleto/checks/${checkId}`),
+  listBanks: () =>
+    genericV1Get('/boleto/banks'),
+};
+
+export const binMonitorApi = {
+  analyze: (bin_prefix: string, window_minutes: number = 1, transactions?: any[]) =>
+    genericV1Post('/bin-monitor/analyze', { bin_prefix, window_minutes, transactions }),
+  listIncidents: (limit: number = 50, active_only: boolean = true) =>
+    genericV1Get(`/bin-monitor/incidents?limit=${limit}&active_only=${active_only}`),
+  applyMitigation: (incident_id: string, action: string, notes?: string) =>
+    genericV1Post(`/bin-monitor/incidents/${incident_id}/mitigate`, { action, notes }),
+  searchDarkwebTor: (bin_prefix: string) =>
+    genericV1Post('/bin-monitor/tor-search', { bin_prefix }),
+};
+
+export const systemApi = {
+  purgeAll: () =>
+    genericV1Post('/system/purge-all', {}),
+  runUnifiedAll: (target_domain: string, target_url?: string, brand_name?: string, bin_prefix: string = '4532') =>
+    genericV1Post('/scan/unified-all', { target_domain, target_url, brand_name, bin_prefix }),
+};
+
+export const fiscalForensicApi = {
+  seedDemo: (record_count: number = 1000) =>
+    genericV1Post('/fiscal/demo/seed', { record_count }),
+  getLatestAudit: () =>
+    genericV1Get('/fiscal/latest'),
+  uploadDataset: async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const urls = [`${API_V1_BASE}/fiscal/datasets/upload`, `http://localhost:8000/api/v1/fiscal/datasets/upload`, `http://localhost:8001/api/v1/fiscal/datasets/upload`];
+    let lastErr = null;
+    for (const url of urls) {
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          body: formData,
+          signal: AbortSignal.timeout(90_000),
+        });
+        if (res.ok) return await res.json();
+      } catch (e) {
+        lastErr = e;
+      }
+    }
+    throw lastErr || new Error('Falha ao enviar arquivo de auditoria fiscal.');
+  },
+  listFindings: (severity?: string, category?: string) =>
+    genericV1Get(`/fiscal/findings?${severity ? `severity=${severity}&` : ''}${category ? `category=${category}&` : ''}`),
+  getFinding: (findingId: string) =>
+    genericV1Get(`/fiscal/findings/${findingId}`),
+  reviewFinding: (findingId: string, status: string, notes?: string) =>
+    genericV1Post(`/fiscal/findings/${findingId}/review`, { status, notes }),
+  getEntityGraph: () =>
+    genericV1Get('/fiscal/entities/graph'),
+  listCases: () =>
+    genericV1Get('/fiscal/cases'),
+  createCase: (data: { title: string; description?: string; finding_ids?: string[]; priority?: string }) =>
+    genericV1Post('/fiscal/cases', data),
+  queryCopilot: (query: string, datasetId?: string) =>
+    genericV1Post('/fiscal/copilot/query', { query, dataset_id: datasetId }),
+  searchFakeCnpj: (domain: string) =>
+    genericV1Post('/fiscal/search-fake-cnpj', { domain }),
+  generateLegalDossier: (domain: string, fake_cnpj_id: string, payload?: any) =>
+    genericV1Post('/fiscal/generate-legal-dossier', { domain, fake_cnpj_id, payload }),
+};
+
+export const codeHumanizerApi = {
+  getPresets: () =>
+    genericV1Get('/code-humanizer/presets'),
+  scan: (projectPath?: string, presetId?: string) =>
+    genericV1Post('/code-humanizer/scan', { project_path: projectPath, preset_id: presetId }),
+  analyze: (projectPath?: string, presetId?: string) =>
+    genericV1Post('/code-humanizer/analyze', { project_path: projectPath, preset_id: presetId }),
+  plan: (projectPath?: string, presetId?: string, mode: string = 'STANDARD') =>
+    genericV1Post('/code-humanizer/plan', { project_path: projectPath, preset_id: presetId, mode }),
+  apply: (projectPath?: string, presetId?: string, mode: string = 'STANDARD', selectedFiles?: string[]) =>
+    genericV1Post('/code-humanizer/apply', { project_path: projectPath, preset_id: presetId, mode, selected_files: selectedFiles }),
+  rollback: (projectPath?: string, version?: string) =>
+    genericV1Post('/code-humanizer/rollback', { project_path: projectPath, version }),
+  getSnapshots: () =>
+    genericV1Get('/code-humanizer/snapshots'),
+  getJsonReport: (presetId?: string) =>
+    genericV1Get(`/code-humanizer/report/json?preset_id=${presetId || 'react-dashboard'}`),
+};
+
+export const fraudIntelApi = {
+  getDashboard: () =>
+    genericV1Get('/fraudintel/dashboard'),
+  listCases: (status?: string, severity?: string, query?: string) => {
+    const params = new URLSearchParams();
+    if (status && status !== 'ALL') params.append('status', status);
+    if (severity && severity !== 'ALL') params.append('severity', severity);
+    if (query) params.append('query', query);
+    const qs = params.toString();
+    return genericV1Get(`/fraudintel/cases${qs ? '?' + qs : ''}`);
+  },
+  getCase: (caseId: string) =>
+    genericV1Get(`/fraudintel/cases/${caseId}`),
+  updateCaseStatus: (caseId: string, status: string) =>
+    genericV1Post(`/fraudintel/cases/${caseId}/status`, { status }),
+  analyzeUrl: (url: string, brand_victim?: string) =>
+    genericV1Post('/fraudintel/analyze/url', { url, brand_victim }),
+  analyzeBoleto: (data: any) =>
+    genericV1Post('/fraudintel/analyze/boleto', data),
+  getFraudGraph: (caseId: string) =>
+    genericV1Get(`/fraudintel/cases/${caseId}/graph`),
+  runAiInvestigate: (caseId: string, custom_query?: string) =>
+    genericV1Post(`/fraudintel/cases/${caseId}/ai-investigate`, { custom_query }),
+  dispatchTakedown: (target_url_or_domain: string, case_id?: string, evidence_bundle?: any) =>
+    genericV1Post('/fraudintel/takedown/dispatch', { target_url_or_domain, case_id, evidence_bundle }),
+  probeTakedown: (domain: string) =>
+    genericV1Get(`/fraudintel/takedown/probe-live?domain=${encodeURIComponent(domain)}`),
+  listRules: () =>
+    genericV1Get('/fraudintel/rules'),
+  listWatchlists: () =>
+    genericV1Get('/fraudintel/watchlists'),
+  getAuditLogs: (limit: number = 100) =>
+    genericV1Get(`/fraudintel/audit-logs?limit=${limit}`),
+};
+
+
+
+
+
 

@@ -1007,7 +1007,7 @@ Workers Celery — acesso dual:
 
 <div align="center">
 
-**morfeusec OSINT** © 2026 — Felipe Costa · fsec.costa@gmail.com
+**morfeusec OSINT** © 2026 — Felipe Costa · felipe_c@myyahoo.com
 
 *Arquitetura de 7 camadas • 30+ serviços • 60+ tecnologias*
 

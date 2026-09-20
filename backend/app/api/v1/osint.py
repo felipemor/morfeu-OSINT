@@ -27,7 +27,7 @@ async def _get_or_create_default_project(db: DbSession) -> Project:
         if not owner:
             owner = User(
                 id="user-001",
-                email="fsec.costa@gmail.com",
+                email="felipe_c@myyahoo.com",
                 full_name="Felipe Costa",
                 hashed_password="transient_hash",
                 role=UserRole.ADMIN,

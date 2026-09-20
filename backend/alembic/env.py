@@ -3,10 +3,10 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 
-config = context.config
+from app.core.config import settings
 
-# Override URL from environment
-db_url = os.environ.get("DATABASE_URL_SYNC", config.get_main_option("sqlalchemy.url"))
+# Override URL from environment / settings
+db_url = os.environ.get("DATABASE_URL_SYNC") or settings.sync_database_url
 config.set_main_option("sqlalchemy.url", db_url)
 
 if config.config_file_name is not None:

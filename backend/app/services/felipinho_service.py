@@ -102,24 +102,24 @@ A aba **Controles de Segurança** executa testes técnicos automatizados baseado
         {
             "keywords": ["autor", "felipe", "costa", "felipe costa", "quem criou", "quem fez", "desenvolvedor", "contato", "email"],
             "title": "Sobre o Autor & Plataforma morfeusec OSINT",
-            "response": """### 👨‍💻 Sobre a Criação do morfeusec OSINT
+            "response": """### 👨‍💻 Sobre a Criação do Heimdall Security
 
-A plataforma **morfeusec OSINT** foi idealizada, arquitetada e escrita por:
+A plataforma **Heimdall Security** foi idealizada, arquitetada e escrita por:
 
 * **Autor:** Felipe Costa
-* **E-mail de Contato:** [`fsec.costa@gmail.com`](mailto:fsec.costa@gmail.com)
+* **E-mail de Contato:** [`felipe_c@myyahoo.com`](mailto:felipe_c@myyahoo.com)
 * **Especialidade:** Arquitetura de Segurança Ofensiva, Inteligência de Ameaças (OSINT), Mobile Pentest e Validação Contínua de Controles.
 
 Qualquer dúvida sobre implementações personalizadas, módulos adicionais ou consultoria de segurança, entre em contato diretamente pelo e-mail acima!"""
         },
         {
             "keywords": ["como usar", "ajuda", "duvida", "iniciar", "scanner", "passo a passo"],
-            "title": "Guia Rápido de Utilização do morfeusec OSINT",
+            "title": "Guia Rápido de Utilização do Heimdall Security",
             "response": """### 🚀 Guia Rápido de Utilização da Plataforma
 
 1. **Dashboard:** Visão consolidada de KPIs, distribuição de vulnerabilidades e postura geral de risco.
 2. **Scanner:** Insira uma URL ou lista de URLs para executar varreduras ativas automatizadas com Spider e detecção OWASP Top 10.
-3. **Mobile Pentest (APK/iOS):** Arraste e solte arquivos `.apk` ou `.ipa` para descompilar o binário, extrair chaves de API hardcoded e gerar relatórios em PDF (PT/EN) e Excel.
+3. **Mobile Pentest (APK/iOS):** Arraste e solte arquivos `.apk` ou `.ipa` para descompilar o binário, extrair chaves de API hardcoded e gerar relatórios em PDF (PT/EN/ES) e Excel.
 4. **OSINT Intelligence:** Digite um domínio corporativo (ex: `empresa.com.br`) para mapear subdomínios, ASN, WAF, DNS DoH e Google Dorks.
 5. **Controles de Segurança:** Audite 32 controles perimétricos com validação contínua e emissão de laudo formal.
 6. **Reports:** Visualize e baixe os relatórios consolidados gerados em PDF e Excel."""
@@ -128,7 +128,7 @@ Qualquer dúvida sobre implementações personalizadas, módulos adicionais ou c
 
     async def answer_query(self, message: str, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
-        Processes user query and provides specialized, technical guidance with Felipinho AI persona.
+        Processes user query and provides specialized, technical guidance with Raven AI persona.
         """
         clean_msg = message.strip().lower()
         now_iso = datetime.now(timezone.utc).isoformat()
@@ -152,11 +152,11 @@ Qualquer dúvida sobre implementações personalizadas, módulos adicionais ou c
         else:
             # Contextual AI fallback reasoning
             response_text = self._generate_contextual_response(message, clean_msg)
-            topic_title = "Orientação Técnica Felipinho AI"
+            topic_title = "Orientação Técnica Raven AI"
 
         return {
-            "assistant": "Felipinho AI",
-            "author_attribution": "Escrito por Felipe Costa - fsec.costa@gmail.com",
+            "assistant": "Raven AI",
+            "author_attribution": "Escrito por Felipe Costa - felipe_c@myyahoo.com",
             "title": topic_title,
             "response": response_text,
             "timestamp": now_iso,

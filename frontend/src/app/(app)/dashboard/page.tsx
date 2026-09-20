@@ -12,20 +12,21 @@ import {
   Shield, Bug, Globe, AlertTriangle, RefreshCw, TrendingUp, Activity,
   ShieldCheck, ShieldAlert, CheckCircle2, Lock, Eye, Cpu, Zap, FileText,
   ExternalLink, ArrowRight, Download, Server, Sparkles, Key, Radio,
-  Building2, Layers, Award, Clock, ArrowUpRight, ChevronRight
+  Building2, Layers, Award, Clock, ArrowUpRight, ChevronRight, Code2
 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 import clsx from 'clsx';
-import toast from 'react-hot-toast';
 
 function HealthScoreGauge({ score, grade, delta }: { score: number; grade: string; delta: number }) {
+  const { t } = useLanguage();
   const color = score >= 85 ? '#10b981' : score >= 70 ? '#f59e0b' : '#ef4444';
   const pct = Math.min(score, 100);
 
   return (
     <div className="flex flex-col items-center justify-center p-6 rounded-2xl bg-bg-secondary border border-bg-border shadow-xl space-y-3">
       <div className="text-center">
-        <p className="text-[11px] font-mono uppercase tracking-widest text-slate-400 font-bold">Security Health Score</p>
-        <span className="text-xs text-emerald-400 font-bold">↑ +{delta}% vs mês anterior</span>
+        <p className="text-[11px] font-mono uppercase tracking-widest text-slate-400 font-bold">{t('dash.healthScore', 'Security Health Score')}</p>
+        <span className="text-xs text-emerald-400 font-bold">↑ +{delta}% MoM</span>
       </div>
 
       <div className="relative w-40 h-40">
@@ -97,6 +98,7 @@ const BUSINESS_UNITS = [
 ];
 
 export default function ExecutiveDashboardPage() {
+  const { t } = useLanguage();
   const [selectedMetric, setSelectedMetric] = useState<string>('health_score');
   const [timeRange, setTimeRange] = useState<'12M' | '6M'>('12M');
   const [activeAnalyticsView, setActiveAnalyticsView] = useState<'SERIES_TREND' | 'RETENTION_ANALYSIS' | 'CONTROLS_MONTHLY' | 'SCORE_CALCULATOR'>('SERIES_TREND');
@@ -128,13 +130,13 @@ export default function ExecutiveDashboardPage() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-black text-slate-100 tracking-tight">Executive Cybersecurity Posture Dashboard</h1>
+                <h1 className="text-2xl font-black text-slate-100 tracking-tight">{t('dash.title', 'Executive Cybersecurity Posture Dashboard')}</h1>
                 <span className="px-2.5 py-0.5 text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">
                   C-LEVEL & CISO VIEW
                 </span>
               </div>
               <p className="text-xs text-slate-400">
-                Organização: <strong className="text-slate-200">Instituição Financeira S/A</strong> • Ambiente: <strong className="text-emerald-400 font-mono">Produção Multi-Cloud</strong> • Data Freshness: <strong className="text-accent-cyan font-mono">Real-Time Stream</strong>
+                Organização: <strong className="text-slate-200">Heimdall Enterprise Organization</strong> • Ambiente: <strong className="text-emerald-400 font-mono">Produção Multi-Cloud</strong> • Data Freshness: <strong className="text-accent-cyan font-mono">Real-Time Stream</strong>
               </p>
             </div>
           </div>
@@ -154,7 +156,7 @@ export default function ExecutiveDashboardPage() {
             href="/aspm"
             className="px-4 py-2.5 rounded-xl text-xs font-bold bg-accent-cyan/15 hover:bg-accent-cyan/25 border border-accent-cyan/40 text-accent-cyan flex items-center gap-2 transition-all shadow-md"
           >
-            <Code2Icon className="w-4 h-4" />
+            <Code2 className="w-4 h-4" />
             <span>AppSec Maturity: {summaryData?.appsec_maturity_score || 93.8}%</span>
           </Link>
         </div>
@@ -164,7 +166,7 @@ export default function ExecutiveDashboardPage() {
       <div className="p-5 rounded-2xl bg-gradient-to-r from-accent-cyan/10 via-purple-500/10 to-bg-secondary border border-accent-cyan/30 shadow-lg space-y-2">
         <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-accent-cyan">
           <Sparkles className="w-4 h-4 animate-pulse" />
-          <span>Executive Intelligence & Storytelling (Síntese da Diretoria)</span>
+          <span>Executive Intelligence & Storytelling (Síntese Raven AI)</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-300">
           {(Array.isArray(summaryData?.executive_storytelling)
@@ -172,7 +174,7 @@ export default function ExecutiveDashboardPage() {
             : (summaryData?.executive_storytelling?.key_achievements || [
                 'Zero vulnerabilidades críticas ativas em produção.',
                 'Conformidade regulatória BACEN Res. 4.893 acima de 98.4%.',
-                'Tempo Médio de Remediação (MTTR) caiu de 14.2 dias para 3.4 dias.',
+                'Tempo Médio de Remediação (MTTR) caiu de 14.2 dias para 2.3 dias.',
                 '100% dos relatórios e evidências protegidos com hash SHA-256 inviolável.',
               ])
           ).map((narrative: string, nIdx: number) => (
@@ -181,6 +183,146 @@ export default function ExecutiveDashboardPage() {
               <span>{narrative}</span>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ─── 5 SUÍTES DE PRODUTOS COMERCIAIS ENTERPRISE ─── */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-300">
+            <Layers className="w-4 h-4 text-accent-cyan" />
+            <span>{t('dash.activeSuites', 'Suítes de Produtos Ativos')} • Heimdall Cyber &amp; Fraud Matrix</span>
+          </div>
+          <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+            {t('dash.operationalSuites', '5 / 5 SUÍTES OPERACIONAIS')}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+          {/* Produto 1: HEIMDALL APEX */}
+          <Link
+            href="/executive-governance"
+            className="p-4 rounded-2xl bg-gradient-to-b from-bg-secondary to-slate-950 border border-bg-border hover:border-accent-cyan/60 transition-all shadow-lg hover:shadow-cyan-500/10 group space-y-2"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase font-mono px-2 py-0.2 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
+                GOVERNANCE
+              </span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-black text-slate-100 group-hover:text-accent-cyan transition-colors">
+                HEIMDALL APEX™
+              </h3>
+              <p className="text-[11px] text-slate-400 leading-tight">
+                {t('suite.governance.desc', 'Governança C-Level, Tri-Pilar e Boardroom Compliance.')}
+              </p>
+            </div>
+            <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>BACEN Res. 85</span>
+              <span className="text-emerald-400 font-bold">98.4% OK</span>
+            </div>
+          </Link>
+
+          {/* Produto 2: HEIMDALL RED */}
+          <Link
+            href="/pentest-hub"
+            className="p-4 rounded-2xl bg-gradient-to-b from-bg-secondary to-slate-950 border border-bg-border hover:border-red-500/60 transition-all shadow-lg hover:shadow-red-500/10 group space-y-2"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase font-mono px-2 py-0.2 rounded bg-red-500/10 text-red-300 border border-red-500/30">
+                OFFENSIVE
+              </span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-black text-slate-100 group-hover:text-red-400 transition-colors">
+                HEIMDALL RED™
+              </h3>
+              <p className="text-[11px] text-slate-400 leading-tight">
+                {t('suite.offensive.desc', 'Pentest Autônomo, EASM Dark Web e Mobile Pentest.')}
+              </p>
+            </div>
+            <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>Superfície ASM</span>
+              <span className="text-cyan-400 font-bold">155 Ativos</span>
+            </div>
+          </Link>
+
+          {/* Produto 3: FRAUDINTEL & BRANDSHIELD */}
+          <Link
+            href="/fraudintel"
+            className="p-4 rounded-2xl bg-gradient-to-b from-bg-secondary to-slate-950 border border-bg-border hover:border-purple-500/60 transition-all shadow-lg hover:shadow-purple-500/10 group space-y-2"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase font-mono px-2 py-0.2 rounded bg-purple-500/10 text-purple-300 border border-purple-500/30">
+                ANTI-FRAUD
+              </span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-black text-slate-100 group-hover:text-purple-400 transition-colors">
+                FRAUDINTEL™
+              </h3>
+              <p className="text-[11px] text-slate-400 leading-tight">
+                {t('suite.antifraud.desc', 'Investigação de Fraudes, Takedowns e Clones de CNPJ.')}
+              </p>
+            </div>
+            <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>SLA Takedown</span>
+              <span className="text-purple-400 font-bold">18.4h Médio</span>
+            </div>
+          </Link>
+
+          {/* Produto 4: AEGIS LATTICE */}
+          <Link
+            href="/findings"
+            className="p-4 rounded-2xl bg-gradient-to-b from-bg-secondary to-slate-950 border border-bg-border hover:border-emerald-500/60 transition-all shadow-lg hover:shadow-emerald-500/10 group space-y-2"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase font-mono px-2 py-0.2 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+                ZERO-TRUST
+              </span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-black text-slate-100 group-hover:text-emerald-400 transition-colors">
+                AEGIS LATTICE™
+              </h3>
+              <p className="text-[11px] text-slate-400 leading-tight">
+                {t('suite.defensive.desc', 'Postura Defensiva, Microsegmentação e Custódia SHA-256.')}
+              </p>
+            </div>
+            <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>Evidence Vault</span>
+              <span className="text-emerald-400 font-bold">100% Imutável</span>
+            </div>
+          </Link>
+
+          {/* Produto 5: CODE QUALITY & APPSEC */}
+          <Link
+            href="/code-humanizer"
+            className="p-4 rounded-2xl bg-gradient-to-b from-bg-secondary to-slate-950 border border-bg-border hover:border-amber-500/60 transition-all shadow-lg hover:shadow-amber-500/10 group space-y-2"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-black uppercase font-mono px-2 py-0.2 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                APPSEC &amp; AI
+              </span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-black text-slate-100 group-hover:text-amber-400 transition-colors">
+                CODE QUALITY™
+              </h3>
+              <p className="text-[11px] text-slate-400 leading-tight">
+                {t('suite.appsec.desc', 'AI Code Humanizer, AST Refactor e SAST/ASPM Gates.')}
+              </p>
+            </div>
+            <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>Code Quality</span>
+              <span className="text-amber-400 font-bold">Grade AAA</span>
+            </div>
+          </Link>
         </div>
       </div>
 
@@ -196,37 +338,37 @@ export default function ExecutiveDashboardPage() {
         {/* 6 High-Density KPI Cards */}
         <div className="lg:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-4">
           <div className="metric-card">
-            <p className="text-xs text-slate-400 font-medium">Ativos Totais / Internet-Facing</p>
+            <p className="text-xs text-slate-400 font-medium">{t('dash.totalAssets', 'Ativos Totais / Internet-Facing')}</p>
             <p className="text-2xl font-black text-slate-100 mt-1">{summaryData?.total_assets || 155} <span className="text-sm font-normal text-accent-cyan">({summaryData?.internet_facing_assets || 58} expostos)</span></p>
-            <span className="text-[10px] text-emerald-400 font-semibold">100% sob WAF Akamai</span>
+            <span className="text-[10px] text-emerald-400 font-semibold">100% Protegido</span>
           </div>
 
           <div className="metric-card">
-            <p className="text-xs text-slate-400 font-medium">Vulnerabilidades Críticas</p>
+            <p className="text-xs text-slate-400 font-medium">{t('dash.criticalFindings', 'Vulnerabilidades Críticas')}</p>
             <p className="text-2xl font-black text-emerald-400 mt-1">{summaryData?.critical_findings || 0}</p>
-            <span className="text-[10px] text-emerald-400 font-semibold">Zero Críticas em Produção</span>
+            <span className="text-[10px] text-emerald-400 font-semibold">{t('dash.zeroCriticals', 'Zero Críticas em Produção')}</span>
           </div>
 
           <div className="metric-card">
-            <p className="text-xs text-slate-400 font-medium">Conformidade SLA de Remediação</p>
+            <p className="text-xs text-slate-400 font-medium">{t('dash.slaCompliance', 'Conformidade SLA de Remediação')}</p>
             <p className="text-2xl font-black text-accent-cyan mt-1">{summaryData?.sla_compliance_pct || 98.4}%</p>
             <span className="text-[10px] text-slate-400 font-semibold">0 Riscos fora do prazo</span>
           </div>
 
           <div className="metric-card">
-            <p className="text-xs text-slate-400 font-medium">MTTR Médio Corporativo</p>
-            <p className="text-2xl font-black text-amber-400 mt-1">{summaryData?.average_mttr_days || 2.3} <span className="text-xs font-normal text-slate-400">dias</span></p>
-            <span className="text-[10px] text-emerald-400 font-semibold">↓ -83.8% vs Outubro 2025</span>
+            <p className="text-xs text-slate-400 font-medium">{t('dash.avgMttr', 'MTTR Médio Corporativo')}</p>
+            <p className="text-2xl font-black text-amber-400 mt-1">{summaryData?.average_mttr_days || 2.3} <span className="text-xs font-normal text-slate-400">{t('dash.days', 'dias')}</span></p>
+            <span className="text-[10px] text-emerald-400 font-semibold">↓ -83.8% MoM</span>
           </div>
 
           <div className="metric-card">
-            <p className="text-xs text-slate-400 font-medium">Cobertura de Controles de Segurança</p>
+            <p className="text-xs text-slate-400 font-medium">{t('dash.controlsCoverage', 'Cobertura de Controles de Segurança')}</p>
             <p className="text-2xl font-black text-purple-400 mt-1">{summaryData?.controls_coverage_pct || 96.4}%</p>
             <span className="text-[10px] text-emerald-400 font-semibold">32 Controles Automatizados</span>
           </div>
 
           <div className="metric-card">
-            <p className="text-xs text-slate-400 font-medium">Conformidade BACEN Res. 4.893</p>
+            <p className="text-xs text-slate-400 font-medium">Compliance & BACEN Res. 85</p>
             <p className="text-2xl font-black text-emerald-400 mt-1">{summaryData?.compliance_score || 98.4}%</p>
             <span className="text-[10px] text-emerald-400 font-semibold">Audit Pack Assinado</span>
           </div>
@@ -535,8 +677,4 @@ export default function ExecutiveDashboardPage() {
       </div>
     </div>
   );
-}
-
-function Code2Icon(props: any) {
-  return <Cpu {...props} />;
 }

@@ -1,0 +1,22 @@
+[package]
+name = "aegis-cli"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "aegis-cli"
+path = "src/main.rs"
+
+[dependencies]
+aegis-crypto = { path = "../aegis-crypto" }
+aegis-scanner = { path = "../aegis-scanner" }
+aegis-proxy = { path = "../aegis-proxy" }
+clap = { workspace = true }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+anyhow = { workspace = true }

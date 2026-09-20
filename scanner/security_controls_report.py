@@ -104,7 +104,7 @@ class NumberedCanvas(canvas.Canvas):
 
         self.setFont("Helvetica", 7)
         self.setFillColor(TEXT_MUTED)
-        self.drawString(36, 26, "ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - fsec.costa@gmail.com")
+        self.drawString(36, 26, "ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - felipe_c@myyahoo.com")
         self.drawRightString(A4[0] - 36, 26, f"Página {self._pageNumber} de {page_count}")
         self.restoreState()
 
@@ -195,7 +195,7 @@ def generate_security_controls_pdf_bytes(target_url: str = "https://app.shieldse
     # Control Scope Table
     scope_data = [
         [Paragraph("<b>Alvo Auditado:</b>", label_style), Paragraph(f"<b>{target_url}</b>", body_style)],
-        [Paragraph("<b>Auditor Responsável:</b>", label_style), Paragraph("Felipe Costa (fsec.costa@gmail.com) — Cybersecurity Architect", body_style)],
+        [Paragraph("<b>Auditor Responsável:</b>", label_style), Paragraph("Felipe Costa (felipe_c@myyahoo.com) — Cybersecurity Architect", body_style)],
         [Paragraph("<b>Padrões Regulatórios:</b>", label_style), Paragraph("Bacen Resolução CMN nº 4.893/2021, Resolução BCB nº 85, NIST SP 800-115, CIS Controls v8", body_style)],
         [Paragraph("<b>Metodologia:</b>", label_style), Paragraph("Validação Contínua de Controles Ofensivos (Sondas Ativas, Headers, WAF, Leaks & DNS)", body_style)],
         [Paragraph("<b>Assinatura Digital SHA-256:</b>", label_style), Paragraph(hashlib.sha256(f"{target_url}-{datetime.now().isoformat()}".encode()).hexdigest(), ParagraphStyle('HashP', fontSize=6.5, fontName='Courier', textColor=ACCENT_BLUE))],
@@ -309,7 +309,7 @@ def generate_security_controls_pdf_bytes(target_url: str = "https://app.shieldse
                   "O escopo avaliado cumpre as diretrizes de segurança da informação estabelecidas pela Resolução CMN nº 4.893/2021 do Banco Central do Brasil.",
                   ParagraphStyle('SignP', fontSize=7.5, textColor=TEXT_MUTED, leading=10.5)),
         Spacer(1, 6),
-        Paragraph("<b>Auditor Líder:</b> Felipe Costa | <b>E-mail:</b> fsec.costa@gmail.com | <b>Plataforma:</b> morfeusec OSINT", ParagraphStyle('SignP2', fontSize=7.5, textColor=ACCENT_BLUE, leading=10.5))
+        Paragraph("<b>Auditor Líder:</b> Felipe Costa | <b>E-mail:</b> felipe_c@myyahoo.com | <b>Plataforma:</b> morfeusec OSINT", ParagraphStyle('SignP2', fontSize=7.5, textColor=ACCENT_BLUE, leading=10.5))
     ]))
 
     doc.build(story, canvasmaker=NumberedCanvas)

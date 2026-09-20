@@ -283,7 +283,7 @@ export default function ExecutiveGovernancePage() {
         },
       },
       assinatura_digital_sha256: '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
-      auditor_responsavel: 'Felipe Costa (fsec.costa@gmail.com) — Principal Security Architect',
+      auditor_responsavel: 'Felipe Costa (felipe_c@myyahoo.com) — Principal Security Architect',
     };
 
     const blob = new Blob([JSON.stringify(pack, null, 2)], { type: 'application/json' });

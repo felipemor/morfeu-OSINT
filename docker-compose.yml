@@ -234,22 +234,19 @@ services:
       - NODE_ENV=production
 
   # ─────────────────────────────────────────────
-  # FLOWER — Celery monitoring
+  # TOR PROXY — EASM Dark Web .onion sidecar
   # ─────────────────────────────────────────────
-  flower:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.worker
-    container_name: pentest-flower
+  tor-proxy:
+    image: dperson/torproxy:latest
+    container_name: pentest-tor-proxy
     restart: unless-stopped
-    command: celery -A app.agents.celery_app flower --port=5555
     environment:
-      - REDIS_URL=redis://:${REDIS_PASSWORD:-changeme_redis}@redis:6379/0
+      - TOR_NewCircuitPeriod=30
     ports:
-      - "127.0.0.1:5555:5555"
+      - "127.0.0.1:9050:9050"   # SOCKS5
+      - "127.0.0.1:8118:8118"   # HTTP Privoxy
     networks:
       - pentest-net
-    depends_on:
-      - redis
+
 
 

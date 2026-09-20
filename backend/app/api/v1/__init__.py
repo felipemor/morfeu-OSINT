@@ -5,7 +5,9 @@ from app.api.v1 import (
     security_controls, osint, mobile_pentest, felipinho, microsegmentation,
     morfeuxdr, grafana_analytics, powerbi,
     aspm, compliance_enterprise, correlation, integrations, copilot, datamart,
-    schedule
+    schedule, pentest_hub,
+    easm, aegis, brand_protection, boleto, bin_monitor,
+    fiscal, code_humanizer
 )
 
 router = APIRouter()
@@ -41,10 +43,17 @@ router.include_router(integrations.router, prefix="/integrations", tags=["Enterp
 router.include_router(copilot.router, prefix="/copilot", tags=["AI Security Copilot"])
 router.include_router(datamart.router, prefix="/datamart", tags=["Executive Data Mart & Trends"])
 router.include_router(schedule.router, prefix="/projects", tags=["Pentest Schedule & Gantt"])
+router.include_router(pentest_hub.router, prefix="/pentest-hub", tags=["Pentest Hub — Ecosystem Central"])
 
+# EASM, Post-Quantum Crypto & Brand/Fraud Protection
+router.include_router(easm.router, prefix="/easm", tags=["EASM & Dark Web Intelligence"])
+router.include_router(aegis.router, prefix="/aegis", tags=["AegisLattice Post-Quantum Cryptography & CBOM"])
+router.include_router(brand_protection.router, prefix="/brand", tags=["Brand Protection & Takedown Radar"])
+router.include_router(boleto.router, prefix="/boleto", tags=["Boleto Bancário Validator & Anti-Fraud"])
+router.include_router(bin_monitor.router, prefix="/bin-monitor", tags=["BIN Attack & Card-Testing Defense"])
 
+# Fiscal Forensic AI — Enterprise Fiscal Audit, Anomaly Detection & Forensic Accounting
+router.include_router(fiscal.router, prefix="/fiscal", tags=["Fiscal Forensic AI — Automated Audit & Fraud Analytics"])
 
-
-
-
-
+# AI Code Humanizer & Enterprise Refactoring Engine
+router.include_router(code_humanizer.router)

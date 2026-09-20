@@ -110,7 +110,7 @@ export async function generateSecurityControlsPdfBlob(
       color: borderCol,
     });
 
-    page.drawText('ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - fsec.costa@gmail.com', {
+    page.drawText('ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - felipe_c@myyahoo.com', {
       x: 36,
       y: 26,
       size: 7,
@@ -346,7 +346,7 @@ export async function generateSecurityControlsPdfBlob(
 
     // Footer
     page.drawLine({ start: { x: 36, y: 36 }, end: { x: width - 36, y: 36 }, thickness: 0.8, color: borderCol });
-    page.drawText('ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - fsec.costa@gmail.com', {
+    page.drawText('ESTRITAMENTE CONFIDENCIAL • Escrito por Felipe Costa - felipe_c@myyahoo.com', {
       x: 36, y: 26, size: 7, font: fontRegular, color: textMuted
     });
 

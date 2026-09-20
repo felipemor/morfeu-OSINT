@@ -15,7 +15,7 @@ import {
   Copy, ExternalLink, ArrowLeft, Settings, Database,
   Server, Network, Flag, Cpu, Check, X, Terminal,
   Wrench, AlertCircle, Sparkles, CheckCheck, Share2,
-  ArrowUpRight, Shuffle, Radio, ShieldAlert
+  ArrowUpRight, Shuffle, Radio, ShieldAlert, FileCheck2, ArrowRight
 } from 'lucide-react';
 import Link from 'next/link';
 import clsx from 'clsx';
@@ -512,6 +512,40 @@ export default function ProjectDetailPage() {
         {/* ── OVERVIEW ──────────────────────────────────────────────────────── */}
         {tab === 'overview' && (
           <div className="max-w-5xl space-y-6">
+            {(project.project_type === 'FINANCIAL_FRAUD' || project.project_type === 'FISCAL_FORENSIC') && (
+              <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-transparent border border-emerald-500/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-emerald-500/5">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                    <FileCheck2 className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                        PROJETO DE TESTE DE FRAUDE FINANCEIRA & PERÍCIA FISCAL
+                      </span>
+                    </div>
+                    <h3 className="text-base font-bold text-slate-100 mt-1">Módulo Pericial & Fiscal Forensic Ativo</h3>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Este projeto é configurado para auditoria contábil, detecção de anomalias com Lei de Benford, conflitos SoD e concentração de fornecedores.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      localStorage.setItem('fiscal_active_project_id', project.id);
+                    }
+                    router.push('/fiscal-forensic');
+                  }}
+                  className="px-4 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 flex items-center gap-2 shadow-lg shadow-emerald-500/20 cursor-pointer whitespace-nowrap transition-all"
+                >
+                  <FileCheck2 className="w-4 h-4" />
+                  <span>Abrir Fiscal Forensic AI</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
             {/* KPI Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[

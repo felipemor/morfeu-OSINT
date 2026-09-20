@@ -1,0 +1,45 @@
+[workspace]
+members = [
+    "crates/aegis-crypto",
+    "crates/aegis-scanner",
+    "crates/aegis-proxy",
+    "crates/aegis-cli",
+]
+resolver = "2"
+
+[workspace.package]
+version = "1.0.0"
+authors   = ["AegisLattice Team"]
+edition   = "2021"
+license   = "Apache-2.0"
+
+[workspace.dependencies]
+# PQC — liboqs Rust bindings (wraps the NIST reference implementation)
+oqs              = { version = "0.9", features = ["kem", "sig"] }
+# Hybrid KEM (X25519 + ML-KEM-768) — compatible with IETF draft-ietf-tls-hybrid-design
+x25519-dalek     = { version = "2", features = ["static_secrets"] }
+# Classic TLS/crypto primitives
+rustls           = { version = "0.23", features = ["ring"] }
+rustls-pki-types = "1"
+ring             = "0.17"
+# Async runtime
+tokio            = { version = "1", features = ["full"] }
+# HTTP
+reqwest          = { version = "0.12", features = ["json", "rustls-tls"] }
+axum             = { version = "0.7", features = ["json"] }
+tower            = "0.4"
+# Serialization
+serde            = { version = "1", features = ["derive"] }
+serde_json       = "1"
+# CycloneDX CBOM output
+cyclonedx-bom    = "0.5"
+# CLI
+clap             = { version = "4", features = ["derive"] }
+# Logging
+tracing          = "0.1"
+tracing-subscriber = { version = "0.3", features = ["json"] }
+# Errors
+thiserror        = "1"
+anyhow           = "1"
+# Benchmark
+criterion        = { version = "0.5", features = ["html_reports"] }

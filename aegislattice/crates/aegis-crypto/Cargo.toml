@@ -1,0 +1,23 @@
+[package]
+name        = "aegis-crypto"
+description = "AegisLattice PQC crypto core — ML-KEM, ML-DSA and Hybrid KEM wrappers"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+oqs              = { workspace = true }
+x25519-dalek     = { workspace = true }
+ring             = { workspace = true }
+serde            = { workspace = true }
+serde_json       = { workspace = true }
+thiserror        = { workspace = true }
+anyhow           = { workspace = true }
+rand             = "0.8"
+zeroize          = { version = "1", features = ["derive"] }
+
+[dev-dependencies]
+criterion = { workspace = true }
+
+[[bench]]
+name    = "pqc_bench"
+harness = false
