@@ -7,7 +7,7 @@ from app.api.v1 import (
     aspm, compliance_enterprise, correlation, integrations, copilot, datamart,
     schedule, pentest_hub,
     easm, aegis, brand_protection, boleto, bin_monitor,
-    fiscal, code_humanizer
+    fiscal, code_humanizer, certificates
 )
 
 router = APIRouter()
@@ -57,3 +57,6 @@ router.include_router(fiscal.router, prefix="/fiscal", tags=["Fiscal Forensic AI
 
 # AI Code Humanizer & Enterprise Refactoring Engine
 router.include_router(code_humanizer.router)
+
+# AegisLattice PKI & Certificate Studio
+router.include_router(certificates.router, prefix="/crypto/certificates", tags=["PKI & Certificate Management"])

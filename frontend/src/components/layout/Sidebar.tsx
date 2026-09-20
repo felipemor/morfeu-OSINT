@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import {
   Shield, LayoutDashboard, FolderKanban, Globe,
-  Bug, ScrollText, ChevronLeft, ChevronRight, ChevronDown, LogOut, User, Crosshair, FileText, Radar, ShieldCheck, Smartphone, Activity, Network, ShieldAlert, BarChart2, BarChart3, ExternalLink, Sparkles, Users, Crown, Code2, Award, FileCheck2, Layers, Search, Bot, Wrench, CheckSquare, Lock, CreditCard, Radio, Compass
+  Bug, ScrollText, ChevronLeft, ChevronRight, ChevronDown, LogOut, User, Crosshair, FileText, Radar, ShieldCheck, Smartphone, Activity, Network, ShieldAlert, BarChart2, BarChart3, ExternalLink, Sparkles, Users, Crown, Code2, Award, FileCheck2, Layers, Search, Bot, Wrench, CheckSquare, Lock, CreditCard, Radio, Compass, Key
 } from 'lucide-react';
 import { authApi } from '@/lib/api';
 import clsx from 'clsx';
@@ -61,15 +61,15 @@ const navigationCategories = [
   {
     id: 'aegis_posture',
     key: 'suite.defensive',
-    title: 'AEGIS LATTICE & SOC™ (Postura & Zero-Trust)',
+    title: 'AEGIS LATTICE & SOC™ (Criptografia & Postura Defensiva)',
     badge: 'DEFENSIVE',
     items: [
+      { key: 'menu.cryptoPki', name: 'Certificados & PKI Studio', href: '/crypto-pki', icon: Key },
+      { key: 'menu.aegislattice', name: 'AegisLattice Post-Quantum Defense', href: '/aegislattice', icon: ShieldCheck },
       { key: 'menu.findings', name: 'Central de Findings & Riscos', href: '/findings', icon: Bug },
       { key: 'menu.remediation', name: 'Guia de Remediação Priorizada', href: '/remediation', icon: Wrench },
       { key: 'menu.evidenceVault', name: 'Evidence Vault (SHA-256 Custódia)', href: '/evidence-vault', icon: Lock },
       { key: 'menu.correlation', name: 'Correlation & Risco Cruzado', href: '/correlation', icon: Network },
-      { key: 'menu.aegislattice', name: 'AegisLattice Post-Quantum Defense', href: '/aegislattice', icon: ShieldCheck },
-      { key: 'menu.microsegmentation', name: 'Zero-Trust Microsegmentation', href: '/microsegmentation', icon: Layers },
     ]
   },
   {

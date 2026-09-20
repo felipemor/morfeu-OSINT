@@ -95,6 +95,18 @@ except Exception as _frd_err:
     fraudintel_router = None
     print(f"Warning: FraudIntel router not loadable: {_frd_err}")
 
+try:
+    from app.api.v1.certificates import router as certificates_router
+except Exception as _cert_err:
+    certificates_router = None
+    print(f"Warning: Certificates router not loadable: {_cert_err}")
+
+try:
+    from app.api.v1.aegis import router as aegis_router
+except Exception as _aegis_err:
+    aegis_router = None
+    print(f"Warning: Aegis router not loadable: {_aegis_err}")
+
 
 app = FastAPI(
     title="AI Autonomous Pentest — Scanner API",
@@ -115,6 +127,12 @@ if code_humanizer_router:
 
 if fraudintel_router:
     app.include_router(fraudintel_router)
+
+if certificates_router:
+    app.include_router(certificates_router, prefix="/api/v1/crypto/certificates", tags=["PKI & Certificate Management"])
+
+if aegis_router:
+    app.include_router(aegis_router, prefix="/api/v1/aegis", tags=["AegisLattice"])
 
 # In-memory scan state
 scans: dict[str, dict] = {}

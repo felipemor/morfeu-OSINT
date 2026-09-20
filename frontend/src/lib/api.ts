@@ -2498,10 +2498,10 @@ const API_V1_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/ap
 
 async function genericV1Post(endpoint: string, body: object): Promise<any> {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const urls = [`${API_V1_BASE}${endpoint}`, `http://localhost:8001/api/v1${endpoint}`];
-  let lastErr = null;
+  const urls = [`${API_V1_BASE}${endpoint}`, `http://localhost:8000/api/v1${endpoint}`, `http://localhost:8001/api/v1${endpoint}`];
+  let lastErr: any = null;
 
-  for (const url of urls) {
+  for (const url of Array.from(new Set(urls))) {
     try {
       const res = await fetch(url, {
         method: 'POST',
@@ -2512,9 +2512,19 @@ async function genericV1Post(endpoint: string, body: object): Promise<any> {
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(90_000),
       });
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        return await res.json();
+      } else {
+        try {
+          const errData = await res.json();
+          const msg = errData?.detail || errData?.message || `Erro HTTP ${res.status}`;
+          lastErr = new Error(typeof msg === 'string' ? msg : JSON.stringify(msg));
+        } catch {
+          lastErr = new Error(`Erro HTTP ${res.status} ao comunicar com a API.`);
+        }
+      }
     } catch (e) {
-      lastErr = e;
+      if (!lastErr) lastErr = e;
     }
   }
   throw lastErr || new Error('Falha ao conectar com o serviço.');
@@ -2522,18 +2532,28 @@ async function genericV1Post(endpoint: string, body: object): Promise<any> {
 
 async function genericV1Get(endpoint: string): Promise<any> {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const urls = [`${API_V1_BASE}${endpoint}`, `http://localhost:8001/api/v1${endpoint}`];
-  let lastErr = null;
+  const urls = [`${API_V1_BASE}${endpoint}`, `http://localhost:8000/api/v1${endpoint}`, `http://localhost:8001/api/v1${endpoint}`];
+  let lastErr: any = null;
 
-  for (const url of urls) {
+  for (const url of Array.from(new Set(urls))) {
     try {
       const res = await fetch(url, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         signal: AbortSignal.timeout(15_000),
       });
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        return await res.json();
+      } else {
+        try {
+          const errData = await res.json();
+          const msg = errData?.detail || errData?.message || `Erro HTTP ${res.status}`;
+          lastErr = new Error(typeof msg === 'string' ? msg : JSON.stringify(msg));
+        } catch {
+          lastErr = new Error(`Erro HTTP ${res.status}`);
+        }
+      }
     } catch (e) {
-      lastErr = e;
+      if (!lastErr) lastErr = e;
     }
   }
   throw lastErr || new Error('Falha ao conectar com o serviço.');
@@ -2701,6 +2721,78 @@ export const fraudIntelApi = {
     genericV1Get('/fraudintel/watchlists'),
   getAuditLogs: (limit: number = 100) =>
     genericV1Get(`/fraudintel/audit-logs?limit=${limit}`),
+};
+
+export interface CertificateGeneratePayload {
+  common_names: string[];
+  country?: string;
+  state?: string;
+  locality?: string;
+  organization?: string;
+  organizational_unit?: string;
+  email?: string;
+  custom_attributes?: { oid_or_name: string; value: string }[];
+  san_list?: { type: string; value: string; oid?: string }[];
+  key_algorithm: string;
+  cert_profile: string;
+  issuance_mode: string;
+  validity_days: number;
+  key_password?: string;
+  custom_usages?: {
+    digital_signature?: boolean;
+    key_encipherment?: boolean;
+    key_agreement?: boolean;
+    content_commitment?: boolean;
+    server_auth?: boolean;
+    client_auth?: boolean;
+    code_signing?: boolean;
+    email_protection?: boolean;
+  };
+}
+
+export const certificatesApi = {
+  generate: (payload: CertificateGeneratePayload) =>
+    genericV1Post('/crypto/certificates/generate', payload),
+  signCsr: (payload: {
+    csr_pem: string;
+    cert_profile?: string;
+    issuance_mode?: string;
+    validity_days?: number;
+    custom_usages?: any;
+  }) =>
+    genericV1Post('/crypto/certificates/sign-csr', payload),
+  parseCsr: (csr_pem: string) =>
+    genericV1Post('/crypto/certificates/parse-csr', { csr_pem }),
+  parseCert: (cert_pem: string) =>
+    genericV1Post('/crypto/certificates/parse-cert', { cert_pem }),
+  downloadBundle: async (bundleData: {
+    filename_base: string;
+    key_pem: string;
+    csr_pem: string;
+    crt_pem: string;
+    pem_fullchain: string;
+    readme_content?: string;
+  }): Promise<Blob> => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const urls = [`${API_V1_BASE}/crypto/certificates/download-bundle`, `http://localhost:8000/api/v1/crypto/certificates/download-bundle`, `http://localhost:8001/api/v1/crypto/certificates/download-bundle`];
+    let lastErr = null;
+    for (const url of urls) {
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify(bundleData),
+        });
+        if (res.ok) return await res.blob();
+      } catch (e) {
+        lastErr = e;
+      }
+    }
+    throw lastErr || new Error('Falha ao baixar pacote de certificados.');
+  },
 };
 
 
