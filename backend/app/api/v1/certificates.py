@@ -9,7 +9,6 @@ from fastapi import APIRouter, HTTPException, Response, status
 from pydantic import BaseModel, Field
 from typing import Any, Dict, List, Optional
 
-from app.api.deps import CurrentUser
 from app.services import cert_generator_service as svc
 from app.services.cert_generator_service import (
     CertProfile,
@@ -87,7 +86,7 @@ class DownloadBundleRequest(BaseModel):
 
 
 @router.post("/generate", status_code=status.HTTP_200_OK)
-async def generate_certificate(body: CertificateGenerateRequest, current_user: CurrentUser):
+async def generate_certificate(body: CertificateGenerateRequest):
     """
     Generate Private Key, CSR, X.509 Certificate and Fullchain PEM with all requested
     Subject Attributes, SANs, and Profile configurations.
@@ -120,7 +119,7 @@ async def generate_certificate(body: CertificateGenerateRequest, current_user: C
 
 
 @router.post("/sign-csr", status_code=status.HTTP_200_OK)
-async def sign_csr(body: SignCSRRequest, current_user: CurrentUser):
+async def sign_csr(body: SignCSRRequest):
     """
     Sign an existing/pasted CSR using the selected CA / Let's Encrypt authority profile.
     """
@@ -139,7 +138,7 @@ async def sign_csr(body: SignCSRRequest, current_user: CurrentUser):
 
 
 @router.post("/parse-csr", status_code=status.HTTP_200_OK)
-async def parse_csr(body: ParseCSRRequest, current_user: CurrentUser):
+async def parse_csr(body: ParseCSRRequest):
     """Inspect and decode an existing PEM-encoded CSR."""
     res = svc.parse_csr_text(body.csr_pem)
     if not res.get("valid"):
@@ -148,7 +147,7 @@ async def parse_csr(body: ParseCSRRequest, current_user: CurrentUser):
 
 
 @router.post("/parse-cert", status_code=status.HTTP_200_OK)
-async def parse_cert(body: ParseCertRequest, current_user: CurrentUser):
+async def parse_cert(body: ParseCertRequest):
     """Inspect and decode an existing PEM-encoded X.509 Certificate."""
     res = svc.parse_cert_text(body.cert_pem)
     if not res.get("valid"):
@@ -157,7 +156,7 @@ async def parse_cert(body: ParseCertRequest, current_user: CurrentUser):
 
 
 @router.post("/download-bundle", status_code=status.HTTP_200_OK)
-async def download_bundle(body: DownloadBundleRequest, current_user: CurrentUser):
+async def download_bundle(body: DownloadBundleRequest):
     """Package and download all 4 files (.key, .csr, .crt, .pem) in a single ZIP archive."""
     try:
         zip_bytes = svc.create_bundle_zip(

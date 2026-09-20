@@ -1,62 +1,59 @@
+import importlib
 from fastapi import APIRouter
-from app.api.v1 import (
-    auth, projects, scopes, scans, assets, findings, evidence,
-    reports, audit, users, approvals, topology, nl_assistant, agents,
-    security_controls, osint, mobile_pentest, felipinho, microsegmentation,
-    morfeuxdr, grafana_analytics, powerbi,
-    aspm, compliance_enterprise, correlation, integrations, copilot, datamart,
-    schedule, pentest_hub,
-    easm, aegis, brand_protection, boleto, bin_monitor,
-    fiscal, code_humanizer, certificates
-)
 
 router = APIRouter()
 
-router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
-router.include_router(users.router, prefix="/users", tags=["Users"])
-router.include_router(projects.router, prefix="/projects", tags=["Projects"])
-router.include_router(scopes.router, prefix="/projects", tags=["Scope"])
-router.include_router(scans.router, prefix="/projects", tags=["Scans"])
-router.include_router(assets.router, prefix="/projects", tags=["Assets"])
-router.include_router(findings.router, prefix="/findings", tags=["Findings"])
-router.include_router(evidence.router, prefix="/evidence", tags=["Evidence"])
-router.include_router(reports.router, prefix="/projects", tags=["Reports"])
-router.include_router(audit.router, prefix="/audit-logs", tags=["Audit"])
-router.include_router(approvals.router, prefix="/approvals", tags=["Approvals"])
-router.include_router(topology.router, prefix="/projects", tags=["Topology & AI Reasoning"])
-router.include_router(nl_assistant.router, prefix="/projects", tags=["NL Security Assistant"])
-router.include_router(agents.router, prefix="/agents", tags=["Endpoint Security Agents"])
-router.include_router(security_controls.router, prefix="/security-controls", tags=["Security Controls Testing"])
-router.include_router(osint.router, prefix="/osint", tags=["OSINT Reconnaissance"])
-router.include_router(mobile_pentest.router, prefix="/mobile-pentest", tags=["Mobile Pentest (APK & iOS)"])
-router.include_router(felipinho.router, prefix="/felipinho", tags=["Felipinho AI Assistant"])
-router.include_router(microsegmentation.router, prefix="/microsegmentation", tags=["Hybrid Microsegmentation & Zero Trust"])
-router.include_router(morfeuxdr.router, prefix="/morfeuxdr", tags=["MorfeuXDR SIEM & XDR Platform"])
-router.include_router(grafana_analytics.router, prefix="/grafana-analytics", tags=["Grafana Security Operations & Honeypots"])
-router.include_router(powerbi.router, prefix="/powerbi", tags=["PowerBI Analytics & REST APIs"])
+ROUTERS_MAP = [
+    ("auth", "/auth", ["Authentication"]),
+    ("users", "/users", ["Users"]),
+    ("projects", "/projects", ["Projects"]),
+    ("scopes", "/projects", ["Scope"]),
+    ("scans", "/projects", ["Scans"]),
+    ("assets", "/projects", ["Assets"]),
+    ("findings", "/findings", ["Findings"]),
+    ("evidence", "/evidence", ["Evidence"]),
+    ("reports", "/projects", ["Reports"]),
+    ("audit", "/audit-logs", ["Audit"]),
+    ("approvals", "/approvals", ["Approvals"]),
+    ("topology", "/projects", ["Topology & AI Reasoning"]),
+    ("nl_assistant", "/projects", ["NL Security Assistant"]),
+    ("agents", "/agents", ["Endpoint Security Agents"]),
+    ("security_controls", "/security-controls", ["Security Controls Testing"]),
+    ("osint", "/osint", ["OSINT Reconnaissance"]),
+    ("mobile_pentest", "/mobile-pentest", ["Mobile Pentest (APK & iOS)"]),
+    ("felipinho", "/felipinho", ["Felipinho AI Assistant"]),
+    ("microsegmentation", "/microsegmentation", ["Hybrid Microsegmentation & Zero Trust"]),
+    ("morfeuxdr", "/morfeuxdr", ["MorfeuXDR SIEM & XDR Platform"]),
+    ("grafana_analytics", "/grafana-analytics", ["Grafana Security Operations & Honeypots"]),
+    ("powerbi", "/powerbi", ["PowerBI Analytics & REST APIs"]),
+    ("aspm", "/aspm", ["AppSec & ASPM Posture"]),
+    ("compliance_enterprise", "/compliance", ["Regulatory Compliance & Controls"]),
+    ("correlation", "/correlation", ["Multi-Plane Correlation & Risk"]),
+    ("integrations", "/integrations", ["Enterprise Connectors Hub"]),
+    ("copilot", "/copilot", ["AI Security Copilot"]),
+    ("datamart", "/datamart", ["Executive Data Mart & Trends"]),
+    ("schedule", "/projects", ["Pentest Schedule & Gantt"]),
+    ("pentest_hub", "/pentest-hub", ["Pentest Hub — Ecosystem Central"]),
+    ("easm", "/easm", ["EASM & Dark Web Intelligence"]),
+    ("aegis", "/aegis", ["AegisLattice Post-Quantum Cryptography & CBOM"]),
+    ("brand_protection", "/brand", ["Brand Protection & Takedown Radar"]),
+    ("boleto", "/boleto", ["Boleto Bancário Validator & Anti-Fraud"]),
+    ("bin_monitor", "/bin-monitor", ["BIN Attack & Card-Testing Defense"]),
+    ("fiscal", "/fiscal", ["Fiscal Forensic AI — Automated Audit & Fraud Analytics"]),
+    ("code_humanizer", "", ["AI Code Humanizer"]),
+    ("certificates", "/crypto/certificates", ["PKI & Certificate Management"]),
+]
 
-# Enterprise Posture & Governance extensions
-router.include_router(aspm.router, prefix="/aspm", tags=["AppSec & ASPM Posture"])
-router.include_router(compliance_enterprise.router, prefix="/compliance", tags=["Regulatory Compliance & Controls"])
-router.include_router(correlation.router, prefix="/correlation", tags=["Multi-Plane Correlation & Risk"])
-router.include_router(integrations.router, prefix="/integrations", tags=["Enterprise Connectors Hub"])
-router.include_router(copilot.router, prefix="/copilot", tags=["AI Security Copilot"])
-router.include_router(datamart.router, prefix="/datamart", tags=["Executive Data Mart & Trends"])
-router.include_router(schedule.router, prefix="/projects", tags=["Pentest Schedule & Gantt"])
-router.include_router(pentest_hub.router, prefix="/pentest-hub", tags=["Pentest Hub — Ecosystem Central"])
-
-# EASM, Post-Quantum Crypto & Brand/Fraud Protection
-router.include_router(easm.router, prefix="/easm", tags=["EASM & Dark Web Intelligence"])
-router.include_router(aegis.router, prefix="/aegis", tags=["AegisLattice Post-Quantum Cryptography & CBOM"])
-router.include_router(brand_protection.router, prefix="/brand", tags=["Brand Protection & Takedown Radar"])
-router.include_router(boleto.router, prefix="/boleto", tags=["Boleto Bancário Validator & Anti-Fraud"])
-router.include_router(bin_monitor.router, prefix="/bin-monitor", tags=["BIN Attack & Card-Testing Defense"])
-
-# Fiscal Forensic AI — Enterprise Fiscal Audit, Anomaly Detection & Forensic Accounting
-router.include_router(fiscal.router, prefix="/fiscal", tags=["Fiscal Forensic AI — Automated Audit & Fraud Analytics"])
-
-# AI Code Humanizer & Enterprise Refactoring Engine
-router.include_router(code_humanizer.router)
-
-# AegisLattice PKI & Certificate Studio
-router.include_router(certificates.router, prefix="/crypto/certificates", tags=["PKI & Certificate Management"])
+for mod_name, prefix, tags in ROUTERS_MAP:
+    try:
+        mod = importlib.import_module(f"app.api.v1.{mod_name}")
+        if hasattr(mod, "router"):
+            kwargs = {}
+            if prefix:
+                kwargs["prefix"] = prefix
+            if tags:
+                kwargs["tags"] = tags
+            router.include_router(mod.router, **kwargs)
+    except Exception as e:
+        # Silently skip optional sub-routers when run in lightweight or standalone scanner mode
+        pass

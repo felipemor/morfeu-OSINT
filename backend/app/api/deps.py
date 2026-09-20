@@ -77,10 +77,10 @@ def require_role(*roles: UserRole):
 
 
 # Common role dependencies
-RequireAdmin = Depends(require_role(UserRole.ADMIN))
-RequireManager = Depends(require_role(UserRole.ADMIN, UserRole.SECURITY_MANAGER))
-RequirePentester = Depends(require_role(UserRole.ADMIN, UserRole.SECURITY_MANAGER, UserRole.PENTESTER))
-RequireAnalyst = Depends(require_role(UserRole.ADMIN, UserRole.SECURITY_MANAGER, UserRole.PENTESTER, UserRole.ANALYST))
+RequireAdmin = Annotated[User, Depends(require_role(UserRole.ADMIN))]
+RequireManager = Annotated[User, Depends(require_role(UserRole.ADMIN, UserRole.SECURITY_MANAGER))]
+RequirePentester = Annotated[User, Depends(require_role(UserRole.ADMIN, UserRole.SECURITY_MANAGER, UserRole.PENTESTER))]
+RequireAnalyst = Annotated[User, Depends(require_role(UserRole.ADMIN, UserRole.SECURITY_MANAGER, UserRole.PENTESTER, UserRole.ANALYST))]
 
 CurrentUser = Annotated[User, Depends(get_current_active_user)]
 DbSession = Annotated[AsyncSession, Depends(get_db)]

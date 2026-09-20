@@ -2494,11 +2494,16 @@ export const pentestHubApi = {
 };
 
 // ─── EASM & Dark Web API ──────────────────────────────────────────────────────
-const API_V1_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+const API_V1_BASE = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
 
 async function genericV1Post(endpoint: string, body: object): Promise<any> {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const urls = [`${API_V1_BASE}${endpoint}`, `http://localhost:8000/api/v1${endpoint}`, `http://localhost:8001/api/v1${endpoint}`];
+  const cleanEp = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const urls = [
+    cleanEp.startsWith('/api/v1') ? cleanEp : `/api/v1${cleanEp}`,
+    `http://localhost:8000/api/v1${cleanEp}`,
+    `http://127.0.0.1:8000/api/v1${cleanEp}`,
+  ];
   let lastErr: any = null;
 
   for (const url of Array.from(new Set(urls))) {
@@ -2532,7 +2537,12 @@ async function genericV1Post(endpoint: string, body: object): Promise<any> {
 
 async function genericV1Get(endpoint: string): Promise<any> {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const urls = [`${API_V1_BASE}${endpoint}`, `http://localhost:8000/api/v1${endpoint}`, `http://localhost:8001/api/v1${endpoint}`];
+  const cleanEp = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const urls = [
+    cleanEp.startsWith('/api/v1') ? cleanEp : `/api/v1${cleanEp}`,
+    `http://localhost:8000/api/v1${cleanEp}`,
+    `http://127.0.0.1:8000/api/v1${cleanEp}`,
+  ];
   let lastErr: any = null;
 
   for (const url of Array.from(new Set(urls))) {
@@ -2774,7 +2784,11 @@ export const certificatesApi = {
     readme_content?: string;
   }): Promise<Blob> => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    const urls = [`${API_V1_BASE}/crypto/certificates/download-bundle`, `http://localhost:8000/api/v1/crypto/certificates/download-bundle`, `http://localhost:8001/api/v1/crypto/certificates/download-bundle`];
+    const urls = [
+      `/api/v1/crypto/certificates/download-bundle`,
+      `http://localhost:8000/api/v1/crypto/certificates/download-bundle`,
+      `http://127.0.0.1:8000/api/v1/crypto/certificates/download-bundle`,
+    ];
     let lastErr = null;
     for (const url of urls) {
       try {
